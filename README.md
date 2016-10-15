@@ -19,14 +19,13 @@ Registered online user is able to
 
 Please use commands as folows to launch app (for linux, for windows it can base easily changed on appropriate command): 
 
-git clone https://github.com/edu-xored/memorise
-cd platform 
-mvn install 
-cd ../memorise-web-app
-mvn install
-mvn jetty:run
-
-then open URL at browser: 
+* git clone https://github.com/edu-xored/memorise
+* cd platform 
+* mvn install 
+* cd ../memorise-web-app
+* mvn install
+* mvn jetty:run
+* then open URL at browser: 
 http://localhost:8080
 
 You will see login page is everything was ok.
@@ -69,4 +68,57 @@ Is base bootstrap project and common crosscuting (orm/).
 
 
 ## Resources
-TBD
+### Telegram group MemoRise.edu-xored:
+Invite link: 
+https://telegram.me/joinchat/C5PUiQpNvcHa9TE5EWuO5Q
+
+### Opens issues 
+We use gitgub issue tracker:
+https://github.com/edu-xored/memorise/issues
+
+
+## Project flow 
+### Looking for open issues at gitgub issue tracker:
+https://github.com/edu-xored/memorise/issues
+
+### Create Personal fork (top right button)
+ 
+### Clone Personal fork 
+for example 
+git clone https://github.com/DVEfremov/edu-xored/memorise/issues
+
+
+### Make some change and commit to personal fork/branch
+
+git add <list of files or dirs> 
+
+
+git commit
+
+
+Use reference to issue # at commit message for example:
+
+issue #2 initial web application bootstrap 
+
+- you can provide some additinoa details as well 
+
+git push origin <branch name>
+
+### Create Merge request
+
+Use "New pull request button" at https://github.com/edu-xored/memorise
+
+ 
+### Ask other members to review your changes  
+
+if all comments answered and all problems resolved some one who is resonsible (lead of the group) submits the chages to master repository
+### Only after that you close the issue 
+Be close make you you have done:
+
+* Provide basic case for you issue to reproduce at web front (like product owner case) 
+* Provide unit tests for algoriths 
+* Provide integration test for new components like crouwler 
+* Provide description of some other cases and change you have made in therms of Quality Assurants Engineer (I've changed the logic of memos searching)
+
+ 
+

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jee="http://www.springframework.org/schema/jee"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:security="http://www.springframework.org/schema/security"
+	   xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.2.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+	<!--
+		SPRING SETUP 
+	 -->
+
+	<!-- Load properties so we can easily change them -->
+	<context:property-placeholder location="classpath:application.properties" />
+
+	<!-- Enable Annotation Configuration in order to automatically scan controllers-->
+	<context:annotation-config />
+
+	<!-- Allow @Transactional annotations for transaction management -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- Search for Rest Resources and configure them automatically -->
+	<context:component-scan base-package="com.eduxored.memorise.rest.resources" />
+	<!--
+		DATABASE SETUP 
+	 -->
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+		<property name="driverClassName" value="${db.driver}" />
+		<property name="url" value="${db.url}" />
+	</bean>
+
+	<bean id="entityManagerFactory"
+		  class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="medicalJournalPU" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="showSql" value="true" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<context:component-scan base-package="com.daniilefremov.core.dao"/>
+
+	<bean id="journalEntryDao" class="com.eduxored.memorise.impl.journal.JpaJournalEntryDao">
+	</bean>
+
+	<bean id="userDao" class="com.eduxored.memorise.impl.user.JpaUserDao">
+	</bean>
+
+	<bean id="dataBaseInitializer" class="com.eduxored.memorise.impl.DataBaseInitializer" init-method="initDataBase">
+		<constructor-arg ref="userDao" />
+		<constructor-arg ref="journalEntryDao" />
+		<constructor-arg ref="passwordEncoder" />
+	</bean>
+
+	<!--
+		INIT REST COMPONENTS 
+	 -->
+
+	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
+
+	<!-- 
+		SPRING SECURITY SETUP
+	-->
+
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder">
+		<constructor-arg value="${app.secret}" />
+	</bean>
+
+	<security:authentication-manager id="authenticationManager">
+		<security:authentication-provider user-service-ref="userDao">
+			<security:password-encoder ref="passwordEncoder"></security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	<security:http
+			entry-point-ref="unauthorizedEntryPoint"
+			authentication-manager-ref="authenticationManager"
+			create-session="stateless">
+		<security:csrf disabled="true"/>
+		<security:custom-filter ref="authenticationTokenProcessingFilter" position="PRE_AUTH_FILTER" />
+		<security:intercept-url pattern="/rest/user/authenticate" access="permitAll" />
+		<security:intercept-url method="GET" pattern="/rest/journal/**" access="hasRole('USER')" />
+		<security:intercept-url method="PUT" pattern="/rest/journal/**" access="hasRole('PUBLISHER')" />
+		<security:intercept-url method="POST" pattern="/rest/journal/**" access="hasRole('PUBLISHER')" />
+		<security:intercept-url method="DELETE" pattern="/rest/journal/**" access="hasRole('PUBLISHER')" />
+	</security:http>
+
+	<bean id="unauthorizedEntryPoint" class="com.daniilefremov.core.rest.UnauthorizedEntryPoint" />
+
+	<bean id="authenticationTokenProcessingFilter" class="com.daniilefremov.core.rest.AuthenticationTokenProcessingFilter">
+		<constructor-arg ref="userDao" />
+	</bean>
+
+</beans>

@@ -1,0 +1,20 @@
+<div class="pull-right">
+	<a href="#!/create" class="btn btn-default" ng-show="hasRole('ROLE_PUBLISHER')" title="Create"><span class="fa fa-plus"></span></a>
+</div>
+<div class="page-header">
+	<h3>Journals</h3>
+</div>
+
+<div ng-repeat="journal in journalEntries">
+	<hr />
+	<div class="pull-right">
+		<a href="" ng-click="deleteEntry(journal)" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_PUBLISHER')" title="delete"><span class="fa fa-trash-o"></span></a>
+		<a href="#!/edit/{{journal.id}}" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_PUBLISHER')" title="edit"><span class="fa fa-pencil"></span></a>
+		<a href="#!/read/{{journal.id}}" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_USER')" title="read"><span class="fa fa-file-pdf-o"></span></a>
+		<a href="#!/upload/{{journal.id}}" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_PUBLISHER')" title="upload"><span class="fa fa-upload"></span></a>
+	</div>
+	<h4>{{journal.date | date}}</h4>
+	<p>{{journal.title}}</p>
+	<p>{{journal.description}}</p>
+</div>
+<hr />

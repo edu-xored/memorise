@@ -70,14 +70,16 @@ Is base bootstrap project and common crosscuting (orm/).
 Invite link: 
 https://telegram.me/joinchat/C5PUiQpNvcHa9TE5EWuO5Q
 
-### Opens issues 
-We use gitgub issue tracker:
+### Opened issues
+We use github issue tracker and github Projects to track issues progress:
 https://github.com/edu-xored/memorise/issues
+https://github.com/edu-xored/memorise/projects
 
+## Project flow
+### Looking for an open issues at github projects tracker:
+https://github.com/edu-xored/memorise/projects
 
-## Project flow 
-### Looking for open issues at gitgub issue tracker:
-https://github.com/edu-xored/memorise/issues
+When you started working on issue assign it to yourself and move issue card to the In Progress column.
 
 ### Create Personal fork (top right button)
  
@@ -118,5 +120,5 @@ Be close make you you have done:
 * Provide integration test for new components like crouwler 
 * Provide description of some other cases and change you have made in therms of Quality Assurants Engineer (I've changed the logic of memos searching)
 
- 
+### Move issue card to the Completed column when it's closed
 

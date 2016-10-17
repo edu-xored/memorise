@@ -20,10 +20,8 @@ Registered online user is able to
 Please use commands as folows to launch app (for linux, for windows it can base easily changed on appropriate command): 
 
 * git clone https://github.com/edu-xored/memorise
-* cd platform 
 * mvn install 
-* cd ../memorise-web-app
-* mvn install
+* cd memorise-web-app
 * mvn jetty:run
 * then open URL at browser: 
 http://localhost:8080

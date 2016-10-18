@@ -2,9 +2,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.daniilefremov</groupId>
-   		<artifactId>master</artifactId>
-		<version>0.1.0-SNAPSHOT</version>
+       	<groupId>com.edu-xored</groupId>
+       	<artifactId>memorise</artifactId>
+       	<version>0.1.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.eduxored</groupId>

@@ -8,7 +8,7 @@
 	</parent>
 
 	<groupId>com.eduxored</groupId>
-	<artifactId>memorise</artifactId>
+	<artifactId>memorise-web-app</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 

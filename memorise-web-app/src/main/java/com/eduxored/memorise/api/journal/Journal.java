@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @javax.persistence.Entity
 @Table(name="JOURNALS")
-public class Journal implements com.daniilefremov.core.entity.Entity{
+public class Journal implements com.eduxored.core.entity.Entity {
 
 	@Id
 	@GeneratedValue

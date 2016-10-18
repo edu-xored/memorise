@@ -1,6 +1,6 @@
 package com.eduxored.memorise.impl.journal;
 
-import com.daniilefremov.core.dao.JpaDao;
+import com.eduxored.core.dao.JpaDao;
 import com.eduxored.memorise.api.journal.Journal;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;

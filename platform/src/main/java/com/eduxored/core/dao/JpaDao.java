@@ -1,4 +1,4 @@
-package com.daniilefremov.core.dao;
+package com.eduxored.core.dao;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
-import com.daniilefremov.core.entity.Entity;
+import com.eduxored.core.entity.Entity;
 
 import org.springframework.transaction.annotation.Transactional;
 

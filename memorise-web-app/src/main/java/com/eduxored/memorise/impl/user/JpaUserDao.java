@@ -8,7 +8,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
-import com.daniilefremov.core.dao.JpaDao;
+import com.eduxored.core.dao.JpaDao;
 import com.eduxored.memorise.api.user.User;
 
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,8 +1,8 @@
-package com.daniilefremov.core.dao;
+package com.eduxored.core.dao;
 
 import java.util.List;
 
-import com.daniilefremov.core.entity.Entity;
+import com.eduxored.core.entity.Entity;
 
 /**
  * Generic CRUDL DAO interface

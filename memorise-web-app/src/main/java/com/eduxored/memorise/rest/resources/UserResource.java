@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
-import com.daniilefremov.core.rest.TokenUtils;
+import com.eduxored.core.rest.TokenUtils;
 import com.eduxored.memorise.transfer.TokenTransfer;
 import com.eduxored.memorise.transfer.UserTransfer;
 

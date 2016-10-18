@@ -1,4 +1,4 @@
-package com.daniilefremov.core.entity;
+package com.eduxored.core.entity;
 
 import java.io.Serializable;
 

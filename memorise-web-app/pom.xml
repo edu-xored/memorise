@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.daniilefremov</groupId>
+		<groupId>com.eduxored</groupId>
    		<artifactId>master</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
@@ -66,7 +66,7 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>com.daniilefremov</groupId>
+			<groupId>com.eduxored</groupId>
 			<artifactId>platform</artifactId>
 			<version>${project.version}</version>
 		</dependency>

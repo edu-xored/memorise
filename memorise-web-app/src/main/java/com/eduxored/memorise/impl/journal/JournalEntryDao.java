@@ -1,6 +1,6 @@
 package com.eduxored.memorise.impl.journal;
 
-import com.daniilefremov.core.dao.Dao;
+import com.eduxored.core.dao.Dao;
 import com.eduxored.memorise.api.journal.Journal;
 
 import java.io.InputStream;

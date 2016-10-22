@@ -26,7 +26,7 @@ Please use commands as folows to launch app (for linux, for windows it can base 
 * then open URL at browser: 
 http://localhost:8080
 
-You will see login page is everything was ok.
+You will see login page if everything was ok.
 
 ##Project technical details
 

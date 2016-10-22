@@ -39,7 +39,7 @@ Is base bootstrap project and common crosscuting (orm/).
 * Frontend - HTML5 responsive UI using REST to communicate with backend 
 * Backend
 ** REST Services
-** Async processes using crowler to find already registered memes and cache some new memes
+** Async processes using crawler to find already registered memes and cache some new memes
 * DB Postgres
 * NoSQL storage for cache of some new memes (in future), first time SpringCache can be used with external storage (Ehcache)
 
@@ -52,7 +52,7 @@ Is base bootstrap project and common crosscuting (orm/).
 * Ehcache
 * REST
 * html4j
-* crowler4j
+* crawler4j
 * Hibernate
 * In memory DB (HSQLDB) / Postgres
 
@@ -117,7 +117,7 @@ Be close make you you have done:
 
 * Provide basic case for you issue to reproduce at web front (like product owner case) 
 * Provide unit tests for algorithms 
-* Provide integration test for new components like crowler 
+* Provide integration test for new components like crawler 
 * Provide description of some other cases and change you have made in therms of Quality Assurance Engineer (I've changed the logic of memes searching)
 
 ### Move issue card to the Completed column when it's closed

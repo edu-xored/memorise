@@ -2,22 +2,22 @@
 
 Project MemoRising is online service for looking for a memes that are becoming popular.
 
-Mem - at this project is some new stable expression used at online social media (VC,)
+Meme - at this project is some new stable expression used at online social media (VC,)
 ##Basic cases 
 
 Unregistered online user is able to 
-* View old (last year top 10 mems)
+* View old (last year top 10 memes)
 * Register using email/login and password 
 * Login using email/login and password 
 
 Registered online user is able to 
-* Request theme to find mems that are becoming popular (later if he has enough money)
-* View actual last month top 10 mems
+* Request theme to find memes that are becoming popular (later if he has enough money)
+* View actual last month top 10 memes
 
 
-# Instalation and quick start 
+# Installation and quick start 
 
-Please use commands as folows to launch app (for linux, for windows it can base easily changed on appropriate command): 
+Please use commands as follows to launch app (for linux, for windows it can base easily changed on appropriate command): 
 
 * git clone https://github.com/edu-xored/memorise
 * mvn install 
@@ -35,13 +35,13 @@ You will see login page if everything was ok.
 
 Is base bootstrap project and common crosscuting (orm/). 
 
-### Mmemorise Web application
+### Memorise Web application
 * Frontend - HTML5 responsive UI using REST to communicate with backend 
 * Backend
 ** REST Services
-** Async processes using crowler to find already registered mems and cache some new mems
+** Async processes using crawler to find already registered memes and cache some new memes
 * DB Postgres
-* NoSQL storage for cache of some new mems (in future), first time SpringCache can be used with external storage (Ehcache)
+* NoSQL storage for cache of some new memes (in future), first time SpringCache can be used with external storage (Ehcache)
 
 ### Stack 
 
@@ -52,15 +52,15 @@ Is base bootstrap project and common crosscuting (orm/).
 * Ehcache
 * REST
 * html4j
-* crowler4j
+* crawler4j
 * Hibernate
 * In memory DB (HSQLDB) / Postgres
 
-### Proposed Algorithm to find mems (Any others are welcome!)
+### Proposed Algorithm to find memes (Any others are welcome!)
 
-* Get list of current mems (mems found at previose iteration) + new mem candidates based on requested themes or from cache
+* Get list of current memes (memes found at previous iteration) + new meme candidates based on requested themes or from cache
 * Calculate velocity of growing the rate of growth in citation
-** If velocity is growing with acceleration then it's rising mem
+** If velocity is growing with acceleration then it's rising meme
 ** else remove from candidates 
 
 
@@ -100,7 +100,7 @@ Use reference to issue # at commit message for example:
 
 issue #2 initial web application bootstrap 
 
-- you can provide some additinoa details as well 
+- you can provide some additional details as well 
 
 git push origin <branch name>
 
@@ -111,14 +111,13 @@ Use "New pull request button" at https://github.com/edu-xored/memorise
  
 ### Ask other members to review your changes  
 
-if all comments answered and all problems resolved some one who is resonsible (lead of the group) submits the chages to master repository
+if all comments answered and all problems resolved some one who is responsible (lead of the group) submits the changes to master repository
 ### Only after that you close the issue 
 Be close make you you have done:
 
 * Provide basic case for you issue to reproduce at web front (like product owner case) 
-* Provide unit tests for algoriths 
-* Provide integration test for new components like crouwler 
-* Provide description of some other cases and change you have made in therms of Quality Assurants Engineer (I've changed the logic of memos searching)
+* Provide unit tests for algorithms 
+* Provide integration test for new components like crawler 
+* Provide description of some other cases and change you have made in therms of Quality Assurance Engineer (I've changed the logic of memes searching)
 
 ### Move issue card to the Completed column when it's closed
-

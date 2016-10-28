@@ -71,12 +71,16 @@ c:\Program Files\Maven339\bin\
 Открываем коммандную строку и проверяем что все правильно 
 (здесь и далее символ > в начале строки обозначает приглашение командной строки, набирать его не нужно J):
 
-> java -version
-java version "1.8.0_111"
-Java(TM) SE Runtime Environment (build 1.8.0_111-b14)
-Java HotSpot(TM) Client VM (build 25.111-b14, mixed mode, sharing)
+>java -version
+
+>java version "1.8.0_111"
+
+>Java(TM) SE Runtime Environment (build 1.8.0_111-b14)
+
+>Java HotSpot(TM) Client VM (build 25.111-b14, mixed mode, sharing)
 
 > mvn -v
+
 Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-10T23:41:47+07:00)
 Maven home: c:\Program Files\Maven339\bin\..
 Java version: 1.8.0_111, vendor: Oracle Corporation
@@ -85,6 +89,7 @@ Default locale: ru_RU, platform encoding: Cp1251
 OS name: "windows 7", version: "6.1", arch: "x86", family: "dos"
 
 > git --version
+
 git version 2.10.1.windows.1
 
 Если все выглядит точно так же, то поздравляю, мы справились с установкой.
@@ -93,9 +98,13 @@ git version 2.10.1.windows.1
 
 Открываем командную строку и выполняем команды:
 > git clone https://github.com/edu-xored/memorise
+
 > cd memorise
+
 > mvn install
+
 > cd memorise-web-app
+
 > mvn jetty:run
 
 Когда увидим в терминале Started Jetty Server, открываем в браузере URL http://localhost:8080

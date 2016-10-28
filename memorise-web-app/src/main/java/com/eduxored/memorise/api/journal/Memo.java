@@ -10,13 +10,13 @@ import java.util.Date;
 
 
 /**
- * JPA Annotated Pojo that represents a Journal entry.
+ * JPA Annotated Pojo that represents a Memo entry.
  *
  * @author Daniil Efremov <daniil.efremov@gmail.com>
  */
 @javax.persistence.Entity
 @Table(name="JOURNALS")
-public class Journal implements com.daniilefremov.core.entity.Entity{
+public class Memo implements com.daniilefremov.core.entity.Entity{
 
 	@Id
 	@GeneratedValue
@@ -43,7 +43,7 @@ public class Journal implements com.daniilefremov.core.entity.Entity{
 	@JsonIgnore
   private Blob content;
 
-  public Journal() {
+  public Memo() {
 		this.date = new Date();
 	}
 
@@ -108,7 +108,7 @@ public class Journal implements com.daniilefremov.core.entity.Entity{
 
 	@Override
 	public String toString() {
-		return String.format("Journal[%d, %s, %s]", this.id, this.title, this.description);
+		return String.format("Memo[%d, %s, %s]", this.id, this.title, this.description);
 	}
 
 }

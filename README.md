@@ -17,16 +17,102 @@ Registered online user is able to
 
 # Installation and quick start 
 
+Итак, вот что нам нужно:
+* JDK 1.8
+* IDE (InelliJ IDEA or Eclipse)
+* Maven 3.2+
+* Git
+
+## Установка JDK
+
+Скачиваем актуальную версию JDK для вашей операционной системы с сайта Oracle:
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
+Запускаем исполняемый файл и следуем указаниям мастера установки.
+
+## Установка IDE
+
+Скачиваем IntelliJ Idea Community 
+https://www.jetbrains.com/idea/download/
+
+Запускаем исполняемый файл и следуем указаниям мастера установки.
+При первом запуске мастер предложит вам сконфигурировать IDE. Оставляем все по умолчанию. 
+
+Мы могли бы на этом остановиться, так как IDE поставляется с git и Maven, но давайте рассмотрим установку и настройку всех инструментов.
+
+## Установка Maven
+
+Скачиваем Maven отсюда: https://maven.apache.org/download.cgi
+
+Нам понадобится zip архив с бинарными файлами. Ссылка на версию для Windows:
+http://apache-mirror.rbc.ru/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip
+
+Распаковываем полученный архив. Я распаковал в C:\Program Files\Maven339
+
+## Установка Git
+
+Скачиваем и устанавливаем git: https://git-scm.com/download/
+
+Подробное руководство по работе с git можно посмотреть здесь же: 
+https://git-scm.com/book/ru/v2
+
+В том числе по установке:
+https://git-scm.com/book/ru/v2/Введение-Установка-Git
+
+## Настройка переменных окружения
+
+Добавляем новую переменную окружения:
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_111
+
+Добавляем пути до каталогов bin Maven и Git в перменную окружения PATH:
+c:\Program Files\Git\bin\
+c:\Program Files\Maven339\bin\
+
+Открываем коммандную строку и проверяем что все правильно 
+(здесь и далее символ > в начале строки обозначает приглашение командной строки, набирать его не нужно J):
+
+> java -version
+java version "1.8.0_111"
+Java(TM) SE Runtime Environment (build 1.8.0_111-b14)
+Java HotSpot(TM) Client VM (build 25.111-b14, mixed mode, sharing)
+
+> mvn -v
+Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-10T23:41:47+07:00)
+Maven home: c:\Program Files\Maven339\bin\..
+Java version: 1.8.0_111, vendor: Oracle Corporation
+Java home: C:\Program Files\Java\jdk1.8.0_111\jre
+Default locale: ru_RU, platform encoding: Cp1251
+OS name: "windows 7", version: "6.1", arch: "x86", family: "dos"
+
+> git --version
+git version 2.10.1.windows.1
+
+Если все выглядит точно так же, то поздравляю, мы справились с установкой.
+
+##Запуск проекта из командной строки:
+
+Открываем командную строку и выполняем команды:
+> git clone https://github.com/edu-xored/memorise
+> cd memorise
+> mvn install
+> cd memorise-web-app
+> mvn jetty:run
+
+Когда увидим в терминале Started Jetty Server, открываем в браузере URL http://localhost:8080
+Если все прошло успешно, то вы увидите форму логина.
+
+##Импорт проекта в IDE
+
+1. Запускаем IDE
+2. Импортируем склонированный проект как Maven проект:
+ - Выбираем на стартовом экране пункт Import Project
+ - В появившемся окне находим каталог с проектом и нажимаем Ok
+ - В окне Import Project выбираем пункт Import project from external model и выбираем Maven, затем нажимаем Next
+ - На следующей странице можно отметить опцию Import Maven projects automatically
+В процессе импорта проекта важно убедиться, что Idea определила установленную JDK, если нет, то помогаем.
+3. Чтобы собрать проект, открываем окно Maven Projects (вкладка в правой части окна, либо через меню View > Tool Windows > Maven Projects), разворачиваем Mater Project > Lifecycle и жмем Install 
+
 Please use commands as follows to launch app (for linux, for windows it can base easily changed on appropriate command): 
-
-* git clone https://github.com/edu-xored/memorise
-* mvn install 
-* cd memorise-web-app
-* mvn jetty:run
-* then open URL at browser: 
-http://localhost:8080
-
-You will see login page if everything was ok.
 
 ##Project technical details
 

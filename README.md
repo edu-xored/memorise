@@ -82,11 +82,17 @@ c:\Program Files\Maven339\bin\
 > mvn -v
 
 Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-10T23:41:47+07:00)
+
 Maven home: c:\Program Files\Maven339\bin\..
+
 Java version: 1.8.0_111, vendor: Oracle Corporation
+
 Java home: C:\Program Files\Java\jdk1.8.0_111\jre
+
 Default locale: ru_RU, platform encoding: Cp1251
+
 OS name: "windows 7", version: "6.1", arch: "x86", family: "dos"
+
 
 > git --version
 
@@ -119,9 +125,7 @@ git version 2.10.1.windows.1
  - В окне Import Project выбираем пункт Import project from external model и выбираем Maven, затем нажимаем Next
  - На следующей странице можно отметить опцию Import Maven projects automatically
 В процессе импорта проекта важно убедиться, что Idea определила установленную JDK, если нет, то помогаем.
-3. Чтобы собрать проект, открываем окно Maven Projects (вкладка в правой части окна, либо через меню View > Tool Windows > Maven Projects), разворачиваем Mater Project > Lifecycle и жмем Install 
-
-Please use commands as follows to launch app (for linux, for windows it can base easily changed on appropriate command): 
+3. Чтобы собрать проект, открываем окно Maven Projects (вкладка в правой части окна, либо через меню View > Tool Windows > Maven Projects), разворачиваем Mater Project > Lifecycle и жмем Install  
 
 ##Project technical details
 

@@ -3,20 +3,15 @@ package com.eduxored.memorise.crawler;
 /**
  * Created by Anatoly on 26.10.2016.
  */
-public class MemoCandidate {
+//todo: replace by Meme with status
+public class MemeCandidate {
     private String name;
-    private String text;
 
-    public MemoCandidate(String name, String text) {
+    public MemeCandidate(String name) {
         this.name = name;
-        this.text = text;
     }
 
     public String getName() {
         return name;
-    }
-
-    public String getText() {
-        return text;
     }
 }

@@ -1,12 +1,15 @@
 package com.eduxored.memorise.crawler;
 
 
+import com.eduxored.memorise.crawler.api.MatchingMemeCandidate;
+import com.eduxored.memorise.crawler.api.MemeParser;
+import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import org.apache.log4j.Logger;
 
-import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
 /**
@@ -17,46 +20,43 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class ActionsCrawler extends WebCrawler {
+    private static MemeParser memeParser;
+    private static MemeCandidate memeCandidate;
+    private static MatchingMemeCandidate matchingMemeCandidate;
+    private static final Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
+            + "|png|tiff?|mid|mp2|mp3|mp4"
+            + "|wav|avi|mov|mpeg|ram|m4v|pdf"
+            + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
 
+    static void configure(MemeParser parser, MatchingMemeCandidate matching, MemeCandidate candidate) {
+        memeParser = parser;
+        matchingMemeCandidate = matching;
+        memeCandidate = candidate;
+    }
 
-        private static final SimpleDateFormat ACTION_END_DATE_FORMAT = new SimpleDateFormat("Последний день: DD.MM.yyyy");
-        private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
-                                                          + "|png|tiff?|mid|mp2|mp3|mp4"
-                                                          + "|wav|avi|mov|mpeg|ram|m4v|pdf"
-                                                          + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
+    @Override
+    public boolean shouldVisit(WebURL url) {
+        String href = url.getURL().toLowerCase();
+        return !FILTERS.matcher(href).matches();
+    }
 
-        /**
-         * You should implement this function to specify whether
-         * the given url should be crawled or not (based on your
-         * crawling logic).
-         */
-        @Override
-        public boolean shouldVisit(WebURL url) {
-                String href = url.getURL().toLowerCase();
-                return !FILTERS.matcher(href).matches() && href.startsWith("http://www.vottakskidka.ru");
+    @Override
+    public void visit(Page page) {
+        logger.info("URL: " + page.getWebURL().getURL());
+        if (page.getParseData() instanceof HtmlParseData) {
+            String text = getPageText(page);
+            MemeInfo info = parseMemeCandidate(text);
+            logger.info("Meme info counter = " + info.getCounter());
+            matchingMemeCandidate.match(memeCandidate, info);
         }
+    }
 
-        /**
-         * This function is called when a page is fetched and ready
-         * to be processed by your program.
-         */
-        @Override
-        public void visit(Page page) {
-                String url = page.getWebURL().getURL();
-                System.out.println("URL: " + url);
+    private String getPageText(Page page) {
+        return ((HtmlParseData) page.getParseData()).getText();
+    }
 
-                if (page.getParseData() instanceof HtmlParseData) {
-                        HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-                        String text = htmlParseData.getText();
-                        String html = htmlParseData.getHtml();
-
-                        // todo add parse memo candidate here
-
-                        // todo add memo candidate matching to memo
-
-                }
-        }
-
-
+    private MemeInfo parseMemeCandidate(String text) {
+        return memeParser.parse(text, memeCandidate);
+    }
 
 }

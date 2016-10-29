@@ -7,5 +7,5 @@ import com.eduxored.memorise.crawler.MemeInfo;
  * Created by Anatoly on 26.10.2016.
  */
 public interface MemeParser {
-    public MemeInfo parser(String text, MemeCandidate candidate);
+    public MemeInfo parse(String text, MemeCandidate candidate);
 }

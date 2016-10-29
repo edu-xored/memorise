@@ -1,2 +1,5 @@
 memorise-web-app/target/
 platform/target/
+memorise-crawler/target/
+.idea/
+*.iml

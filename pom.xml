@@ -26,7 +26,6 @@
 	<modules>
 		<module>platform</module>
 		<module>memorise-web-app</module>
-		<module>memorise-crawler</module>
 	</modules>
 
 

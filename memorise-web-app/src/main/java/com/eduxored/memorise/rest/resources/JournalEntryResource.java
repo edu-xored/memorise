@@ -1,7 +1,7 @@
 package com.eduxored.memorise.rest.resources;
 
 import com.eduxored.memorise.JsonViews;
-import com.eduxored.memorise.api.journal.Journal;
+import com.eduxored.memorise.api.journal.Memo;
 import com.eduxored.memorise.impl.journal.JournalEntryDao;
 import com.eduxored.memorise.api.user.Role;
 import org.codehaus.jackson.JsonGenerationException;
@@ -45,7 +45,7 @@ public class JournalEntryResource {
 		} else {
 			viewWriter = this.mapper.writerWithView(JsonViews.User.class);
 		}
-		List<Journal> allEntries = this.journalEntryDao.findAll();
+		List<Memo> allEntries = this.journalEntryDao.findAll();
 
 		return viewWriter.writeValueAsString(allEntries);
 	}
@@ -53,10 +53,10 @@ public class JournalEntryResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Journal read(@PathParam("id") Long id) {
+	public Memo read(@PathParam("id") Long id) {
 		this.logger.info("read(id)");
 
-		Journal journalsEntry = this.journalEntryDao.find(id);
+		Memo journalsEntry = this.journalEntryDao.find(id);
 		if (journalsEntry == null) {
 			throw new WebApplicationException(404);
 		}
@@ -66,7 +66,7 @@ public class JournalEntryResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Journal create(Journal journalsEntry) {
+	public Memo create(Memo journalsEntry) {
 		this.logger.info("create(): " + journalsEntry);
 
 		return this.journalEntryDao.save(journalsEntry);
@@ -76,7 +76,7 @@ public class JournalEntryResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Journal update(@PathParam("id") Long id, Journal journalsEntry) {
+	public Memo update(@PathParam("id") Long id, Memo journalsEntry) {
 		this.logger.info("update(): " + journalsEntry);
 
 		return this.journalEntryDao.save(journalsEntry);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/memorise.iml" filepath="$PROJECT_DIR$/memorise.iml" />
+      <module fileurl="file://$PROJECT_DIR$/memorise-crawler/memorise-crawler.iml" filepath="$PROJECT_DIR$/memorise-crawler/memorise-crawler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/memorise-web-app/memorise-web-app.iml" filepath="$PROJECT_DIR$/memorise-web-app/memorise-web-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/platform/platform.iml" filepath="$PROJECT_DIR$/platform/platform.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,7 +1,7 @@
 package com.eduxored.memorise.impl.journal;
 
 import com.daniilefremov.core.dao.JpaDao;
-import com.eduxored.memorise.api.journal.Journal;
+import com.eduxored.memorise.api.journal.Memo;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,30 +20,30 @@ import java.util.List;
  *
  * @author Daniil Efremov <daniil.efremov@gmail.com>
  */
-class JpaJournalEntryDao extends JpaDao<Journal, Long> implements JournalEntryDao {
+class JpaJournalEntryDao extends JpaDao<Memo, Long> implements JournalEntryDao {
 
 	public JpaJournalEntryDao() {
-		super(Journal.class);
+		super(Memo.class);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Journal> findAll()
+	public List<Memo> findAll()
 	{
 		final CriteriaBuilder builder = this.getEntityManager().getCriteriaBuilder();
-		final CriteriaQuery<Journal> criteriaQuery = builder.createQuery(Journal.class);
+		final CriteriaQuery<Memo> criteriaQuery = builder.createQuery(Memo.class);
 
-		Root<Journal> root = criteriaQuery.from(Journal.class);
+		Root<Memo> root = criteriaQuery.from(Memo.class);
 		criteriaQuery.orderBy(builder.desc(root.get("date")));
 
-		TypedQuery<Journal> typedQuery = this.getEntityManager().createQuery(criteriaQuery);
+		TypedQuery<Memo> typedQuery = this.getEntityManager().createQuery(criteriaQuery);
 		return typedQuery.getResultList();
 	}
 
 
 	@Override
 	@Transactional
-	public void uploadFile(Journal journal, InputStream bstream) {
+	public void uploadFile(Memo memo, InputStream bstream) {
 		Session session = getEntityManager().unwrap(Session.class);
 		try {
 			File tempFile = File.createTempFile("temp-file-name", ".tmp");
@@ -68,20 +68,20 @@ class JpaJournalEntryDao extends JpaDao<Journal, Long> implements JournalEntryDa
 			}
 
 			Blob blob = Hibernate.getLobCreator(session).createBlob(new FileInputStream(tempFile), tempFile.length());
-			journal.setContent(blob);
-			save(journal);
+			memo.setContent(blob);
+			save(memo);
 		} catch (IOException e) {
-			throw new IllegalArgumentException("Error while saving file data to DB for " + journal.toString(), e);
+			throw new IllegalArgumentException("Error while saving file data to DB for " + memo.toString(), e);
 		}
 	}
 
 	@Override
 	@Transactional
-	public InputStream readFile(Journal journal)  {
+	public InputStream readFile(Memo memo)  {
 		try {
-			return journal.getContent().getBinaryStream();
+			return memo.getContent().getBinaryStream();
 		} catch (SQLException e) {
-			throw new RuntimeException("no any file found for " + journal,e);
+			throw new RuntimeException("no any file found for " + memo,e);
 		}
 	}
 

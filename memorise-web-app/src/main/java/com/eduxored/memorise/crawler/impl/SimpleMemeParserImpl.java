@@ -11,15 +11,14 @@ public class SimpleMemeParserImpl implements MemeParser {
     @Override
     public MemeInfo parse(String text, MemeCandidate candidate) {
         int counter = 0;
-        int index;
-        while ((index = text.indexOf(candidate.getName())) != -1) {
+        int index = 0;
+        while ((index = indexofNextCandidate(text, candidate, index)) != -1) {
             counter++;
-            text = sliceCandidateFromText(text, candidate, index);
         }
         return new MemeInfo(counter);
     }
 
-    private String sliceCandidateFromText(String text, MemeCandidate candidate, int index) {
-        return text.substring(index + candidate.getName().length());
+    private int indexofNextCandidate(String text, MemeCandidate candidate, int index) {
+        return text.indexOf(candidate.getName(), index + candidate.getName().length());
     }
 }

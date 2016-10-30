@@ -4,11 +4,12 @@
   <name>MemoRise Crawler  Module</name>
 
     <parent>
-        <groupId>com.edu-xored</groupId>
-        <artifactId>memorise</artifactId>
+        <groupId>org.xored.edu.memorise</groupId>
+        <artifactId>parent</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
+    <groupId>org.xored.edu.memorise</groupId>
     <artifactId>memorise-crawler</artifactId>
     <packaging>jar</packaging>
 

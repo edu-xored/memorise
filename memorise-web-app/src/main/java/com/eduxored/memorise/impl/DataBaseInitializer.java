@@ -2,7 +2,7 @@ package com.eduxored.memorise.impl;
 
 import com.eduxored.memorise.impl.journal.JournalEntryDao;
 import com.eduxored.memorise.impl.user.UserDao;
-import com.eduxored.memorise.api.journal.Journal;
+import com.eduxored.memorise.api.journal.Memo;
 import com.eduxored.memorise.api.user.Role;
 import com.eduxored.memorise.api.user.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,11 +49,11 @@ public class DataBaseInitializer {
 
 		long timestamp = System.currentTimeMillis() - (1000 * 60 * 60 * 24);
 		for (int i = 0; i < 10; i++) {
-			Journal journal = new Journal();
-			journal.setTitle("This is Memo title " + i);
-			journal.setDescription("This is Memo detailed info " + i);
-			journal.setDate(new Date(timestamp));
-			this.journalEntryDao.save(journal);
+			Memo memo = new Memo();
+			memo.setTitle("This is Memo title " + i);
+			memo.setDescription("This is Memo detailed info " + i);
+			memo.setDate(new Date(timestamp));
+			this.journalEntryDao.save(memo);
 			timestamp += 1000 * 60 * 60;
 		}
 	}

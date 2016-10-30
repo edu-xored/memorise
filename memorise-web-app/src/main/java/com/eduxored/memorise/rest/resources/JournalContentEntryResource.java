@@ -1,6 +1,6 @@
 package com.eduxored.memorise.rest.resources;
 
-import com.eduxored.memorise.api.journal.Journal;
+import com.eduxored.memorise.api.journal.Memo;
 import com.eduxored.memorise.impl.journal.JournalEntryDao;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
@@ -36,9 +36,9 @@ public class JournalContentEntryResource {
 		@FormDataParam("file") InputStream uploadedInputStream,
 		@FormDataParam("file") FormDataContentDisposition fileDetail) {
 
-		Journal journal = journalEntryDao.find(journalId);
-		journal.setFileName(fileDetail.getFileName());
-		journalEntryDao.uploadFile(journal, uploadedInputStream);
+		Memo memo = journalEntryDao.find(journalId);
+		memo.setFileName(fileDetail.getFileName());
+		journalEntryDao.uploadFile(memo, uploadedInputStream);
 
 		String output = "File " + fileDetail.getFileName() + " uploaded.";
 		return Response.status(200).entity(output).build();
@@ -48,12 +48,12 @@ public class JournalContentEntryResource {
 	@Path("/download")
 	@Produces({"application/pdf"})
 	public Response getPDF(@PathParam("journalId")long journalId ) {
-		Journal journal = journalEntryDao.find(journalId);
-		Response.ResponseBuilder response = Response.ok(journalEntryDao.readFile(journal));
-		response.header("Content-Disposition", "attachment; filename=" + journal.getFileName());
+		Memo memo = journalEntryDao.find(journalId);
+		Response.ResponseBuilder response = Response.ok(journalEntryDao.readFile(memo));
+		response.header("Content-Disposition", "attachment; filename=" + memo.getFileName());
 		response.header("Content-Type", "application/pdf");
 		response.header("Access-Control-Expose-Headers", "x-filename");
-		response.header("x-filename", journal.getFileName());
+		response.header("x-filename", memo.getFileName());
 		return response.build();
 	}
 

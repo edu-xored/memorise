@@ -2,12 +2,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.eduxored</groupId>
-   		<artifactId>master</artifactId>
-		<version>0.1.0-SNAPSHOT</version>
-	</parent>
+        	<groupId>com.edu-xored</groupId>
+        	<artifactId>memorise</artifactId>
+        	<version>0.1.0-SNAPSHOT</version>
+    	</parent>
 
-	<groupId>com.eduxored</groupId>
+
+	<groupId>com.edu-xored</groupId>
 	<artifactId>platform</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>

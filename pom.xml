@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.xored.edu.memorise</groupId>
-	<artifactId>parent</artifactId>
+	<artifactId>memorise</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 
 	<name>org :: xored :: edu :: Memorise Project</name>
@@ -26,7 +26,6 @@
 	<modules>
 		<module>platform</module>
 		<module>memorise-web-app</module>
-		<module>memorise-crawler</module>
 	</modules>
 
 

@@ -3,7 +3,7 @@
 
 	<parent>
         	<groupId>org.xored.edu.memorise</groupId>
-        	<artifactId>parent</artifactId>
+        	<artifactId>memorise</artifactId>
         	<version>0.1.0-SNAPSHOT</version>
     	</parent>
 

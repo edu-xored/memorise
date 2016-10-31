@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/edu-xored/memorise.svg?branch=master)](https://travis-ci.org/edu-xored/memorise)
+
 # memorise
 
 Project MemoRising is online service for looking for a memes that are becoming popular.

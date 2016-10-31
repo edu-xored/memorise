@@ -56,7 +56,7 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-	<context:component-scan base-package="com.daniilefremov.core.dao"/>
+	<context:component-scan base-package="org.xored.edu.memorise.core.dao"/>
 
 	<bean id="journalEntryDao" class="com.daniilefremov.medicaljournals.impl.memo.JpaJournalEntryDao">
 	</bean>
@@ -103,9 +103,9 @@
 		<security:intercept-url method="DELETE" pattern="/rest/memo/**" access="hasRole('PUBLISHER')" />
 	</security:http>
 
-	<bean id="unauthorizedEntryPoint" class="com.daniilefremov.core.rest.UnauthorizedEntryPoint" />
+	<bean id="unauthorizedEntryPoint" class="org.xored.edu.memorise.core.rest.UnauthorizedEntryPoint" />
 
-	<bean id="authenticationTokenProcessingFilter" class="com.daniilefremov.core.rest.AuthenticationTokenProcessingFilter">
+	<bean id="authenticationTokenProcessingFilter" class="org.xored.edu.memorise.core.rest.AuthenticationTokenProcessingFilter">
 		<constructor-arg ref="userDao" />
 	</bean>
 

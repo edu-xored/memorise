@@ -28,7 +28,7 @@
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<!-- Search for Rest Resources and configure them automatically -->
-	<context:component-scan base-package="com.eduxored.memorise.rest.resources" />
+	<context:component-scan base-package="org.xored.edu.memorise.rest.resources" />
 	<!--
 		DATABASE SETUP 
 	 -->
@@ -56,15 +56,15 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-	<context:component-scan base-package="com.daniilefremov.core.dao"/>
+	<context:component-scan base-package="org.xored.edu.memorise.core.dao"/>
 
-	<bean id="journalEntryDao" class="com.eduxored.memorise.impl.memo.JpaJournalEntryDao">
+	<bean id="journalEntryDao" class="org.xored.edu.memorise.impl.journal.JpaJournalEntryDao">
 	</bean>
 
-	<bean id="userDao" class="com.eduxored.memorise.impl.user.JpaUserDao">
+	<bean id="userDao" class="org.xored.edu.memorise.impl.user.JpaUserDao">
 	</bean>
 
-	<bean id="dataBaseInitializer" class="com.eduxored.memorise.impl.DataBaseInitializer" init-method="initDataBase">
+	<bean id="dataBaseInitializer" class="org.xored.edu.memorise.impl.DataBaseInitializer" init-method="initDataBase">
 		<constructor-arg ref="userDao" />
 		<constructor-arg ref="journalEntryDao" />
 		<constructor-arg ref="passwordEncoder" />
@@ -103,9 +103,9 @@
 		<security:intercept-url method="DELETE" pattern="/rest/memo/**" access="hasRole('PUBLISHER')" />
 	</security:http>
 
-	<bean id="unauthorizedEntryPoint" class="com.daniilefremov.core.rest.UnauthorizedEntryPoint" />
+	<bean id="unauthorizedEntryPoint" class="org.xored.edu.memorise.core.rest.UnauthorizedEntryPoint" />
 
-	<bean id="authenticationTokenProcessingFilter" class="com.daniilefremov.core.rest.AuthenticationTokenProcessingFilter">
+	<bean id="authenticationTokenProcessingFilter" class="org.xored.edu.memorise.core.rest.AuthenticationTokenProcessingFilter">
 		<constructor-arg ref="userDao" />
 	</bean>
 

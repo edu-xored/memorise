@@ -109,4 +109,39 @@
 		<constructor-arg ref="userDao" />
 	</bean>
 
+	<!--
+	QUARTZ JOB SETUP
+	-->
+
+	<bean name="JobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="org.xored.edu.memorise.QuartzJob"/>
+		<property name="durability" value="true" />
+	</bean>
+
+	<!--
+	QUARTZ TRIGGER SETUP
+	-->
+
+	<bean id="cronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="JobDetail" />
+		<!-- job start every day at 3:00 !-->
+		<property name="cronExpression" value="0 0 3 * * ?" />
+	</bean>
+
+	<!--
+	QUARTZ SCHEDULER SETUP
+	-->
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+			<list>
+				<ref bean="JobDetail" />
+			</list>
+		</property>
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger"/>
+			</list>
+		</property>
+	</bean>
 </beans>

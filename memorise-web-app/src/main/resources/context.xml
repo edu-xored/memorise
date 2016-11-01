@@ -124,9 +124,8 @@
 
 	<bean id="cronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="JobDetail" />
-		<property name="cronExpression" value="0/2 * * * * ?" />
 		<!-- job start every day at 3:00 !-->
-		<!--<property name="cronExpression" value="0 0 3 * * ?" />-->
+		<property name="cronExpression" value="0 0 3 * * ?" />
 	</bean>
 
 	<!--

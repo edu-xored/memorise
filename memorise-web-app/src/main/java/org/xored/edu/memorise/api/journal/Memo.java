@@ -15,7 +15,7 @@ import java.util.Date;
  * @author Daniil Efremov <daniil.efremov@gmail.com>
  */
 @javax.persistence.Entity
-@Table(name="JOURNALS")
+@Table(name="MEMOS")
 public class Memo implements org.xored.edu.memorise.core.entity.Entity {
 
 	@Id

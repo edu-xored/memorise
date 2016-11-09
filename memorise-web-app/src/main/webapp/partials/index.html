@@ -5,16 +5,16 @@
 	<h3>Memos</h3>
 </div>
 
-<div ng-repeat="memo in journalEntries">
+<div ng-repeat="meme in journalEntries">
 	<hr />
 	<div class="pull-right">
-		<a href="" ng-click="deleteEntry(memo)" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_PUBLISHER')" title="delete"><span class="fa fa-trash-o"></span></a>
-		<a href="#!/edit/{{memo.id}}" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_PUBLISHER')" title="edit"><span class="fa fa-pencil"></span></a>
-		<a href="#!/read/{{memo.id}}" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_USER')" title="read"><span class="fa fa-file-pdf-o"></span></a>
-		<a href="#!/upload/{{memo.id}}" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_PUBLISHER')" title="upload"><span class="fa fa-upload"></span></a>
+		<a href="" ng-click="deleteEntry(meme)" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_PUBLISHER')" title="delete"><span class="fa fa-trash-o"></span></a>
+		<a href="#!/edit/{{meme.id}}" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_PUBLISHER')" title="edit"><span class="fa fa-pencil"></span></a>
+		<a href="#!/read/{{meme.id}}" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_USER')" title="read"><span class="fa fa-file-pdf-o"></span></a>
+		<a href="#!/upload/{{meme.id}}" class="btn btn-xs btn-default" ng-show="hasRole('ROLE_PUBLISHER')" title="upload"><span class="fa fa-upload"></span></a>
 	</div>
-	<h4>{{memo.date | date}}</h4>
-	<p>{{memo.title}}</p>
-	<p>{{memo.description}}</p>
+	<h4>{{meme.date | date}}</h4>
+	<p>{{meme.title}}</p>
+	<p>{{meme.description}}</p>
 </div>
 <hr />

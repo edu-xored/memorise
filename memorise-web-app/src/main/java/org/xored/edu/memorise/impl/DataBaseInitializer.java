@@ -1,8 +1,8 @@
 package org.xored.edu.memorise.impl;
 
+import org.xored.edu.memorise.api.meme.Meme;
 import org.xored.edu.memorise.impl.journal.JournalEntryDao;
 import org.xored.edu.memorise.impl.user.UserDao;
-import org.xored.edu.memorise.api.journal.Memo;
 import org.xored.edu.memorise.api.user.Role;
 import org.xored.edu.memorise.api.user.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,11 +49,11 @@ public class DataBaseInitializer {
 
 		long timestamp = System.currentTimeMillis() - (1000 * 60 * 60 * 24);
 		for (int i = 0; i < 10; i++) {
-			Memo memo = new Memo();
-			memo.setTitle("This is Memo title " + i);
-			memo.setDescription("This is Memo detailed info " + i);
-			memo.setDate(new Date(timestamp));
-			this.journalEntryDao.save(memo);
+			Meme meme = new Meme();
+			meme.setTitle("This is Meme title " + i);
+			meme.setDescription("This is Meme detailed info " + i);
+			meme.setDate(new Date(timestamp));
+			this.journalEntryDao.save(meme);
 			timestamp += 1000 * 60 * 60;
 		}
 	}

@@ -1,4 +1,4 @@
-package org.xored.edu.memorise.api.journal;
+package org.xored.edu.memorise.api.meme;
 
 import org.xored.edu.memorise.JsonViews;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -10,13 +10,13 @@ import java.util.Date;
 
 
 /**
- * JPA Annotated Pojo that represents a Memo entry.
+ * JPA Annotated Pojo that represents a Meme entry.
  *
  * @author Daniil Efremov <daniil.efremov@gmail.com>
  */
 @javax.persistence.Entity
-@Table(name="JOURNALS")
-public class Memo implements org.xored.edu.memorise.core.entity.Entity {
+@Table(name="MEMOS")
+public class Meme implements org.xored.edu.memorise.core.entity.Entity {
 
 	@Id
 	@GeneratedValue
@@ -43,7 +43,7 @@ public class Memo implements org.xored.edu.memorise.core.entity.Entity {
 	@JsonIgnore
   private Blob content;
 
-  public Memo() {
+  public Meme() {
 		this.date = new Date();
 	}
 
@@ -108,7 +108,7 @@ public class Memo implements org.xored.edu.memorise.core.entity.Entity {
 
 	@Override
 	public String toString() {
-		return String.format("Memo[%d, %s, %s]", this.id, this.title, this.description);
+		return String.format("Meme[%d, %s, %s]", this.id, this.title, this.description);
 	}
 
 }

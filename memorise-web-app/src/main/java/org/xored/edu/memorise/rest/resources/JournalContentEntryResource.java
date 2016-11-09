@@ -1,6 +1,6 @@
 package org.xored.edu.memorise.rest.resources;
 
-import org.xored.edu.memorise.api.journal.Memo;
+import org.xored.edu.memorise.api.meme.Meme;
 import org.xored.edu.memorise.impl.journal.JournalEntryDao;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
@@ -36,9 +36,9 @@ public class JournalContentEntryResource {
 		@FormDataParam("file") InputStream uploadedInputStream,
 		@FormDataParam("file") FormDataContentDisposition fileDetail) {
 
-		Memo memo = journalEntryDao.find(journalId);
-		memo.setFileName(fileDetail.getFileName());
-		journalEntryDao.uploadFile(memo, uploadedInputStream);
+		Meme meme = journalEntryDao.find(journalId);
+		meme.setFileName(fileDetail.getFileName());
+		journalEntryDao.uploadFile(meme, uploadedInputStream);
 
 		String output = "File " + fileDetail.getFileName() + " uploaded.";
 		return Response.status(200).entity(output).build();
@@ -48,12 +48,12 @@ public class JournalContentEntryResource {
 	@Path("/download")
 	@Produces({"application/pdf"})
 	public Response getPDF(@PathParam("journalId")long journalId ) {
-		Memo memo = journalEntryDao.find(journalId);
-		Response.ResponseBuilder response = Response.ok(journalEntryDao.readFile(memo));
-		response.header("Content-Disposition", "attachment; filename=" + memo.getFileName());
+		Meme meme = journalEntryDao.find(journalId);
+		Response.ResponseBuilder response = Response.ok(journalEntryDao.readFile(meme));
+		response.header("Content-Disposition", "attachment; filename=" + meme.getFileName());
 		response.header("Content-Type", "application/pdf");
 		response.header("Access-Control-Expose-Headers", "x-filename");
-		response.header("x-filename", memo.getFileName());
+		response.header("x-filename", meme.getFileName());
 		return response.build();
 	}
 

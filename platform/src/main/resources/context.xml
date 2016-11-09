@@ -58,7 +58,7 @@
 
 	<context:component-scan base-package="org.xored.edu.memorise.core.dao"/>
 
-	<bean id="journalEntryDao" class="com.daniilefremov.medicaljournals.impl.memo.JpaJournalEntryDao">
+	<bean id="journalEntryDao" class="com.daniilefremov.medicaljournals.impl.meme.JpaJournalEntryDao">
 	</bean>
 
 	<bean id="userDao" class="com.daniilefremov.medicaljournals.impl.user.JpaUserDao">
@@ -97,10 +97,10 @@
 		<security:csrf disabled="true"/>
 		<security:custom-filter ref="authenticationTokenProcessingFilter" position="PRE_AUTH_FILTER" />
 		<security:intercept-url pattern="/rest/user/authenticate" access="permitAll" />
-		<security:intercept-url method="GET" pattern="/rest/memo/**" access="hasRole('USER')" />
-		<security:intercept-url method="PUT" pattern="/rest/memo/**" access="hasRole('PUBLISHER')" />
-		<security:intercept-url method="POST" pattern="/rest/memo/**" access="hasRole('PUBLISHER')" />
-		<security:intercept-url method="DELETE" pattern="/rest/memo/**" access="hasRole('PUBLISHER')" />
+		<security:intercept-url method="GET" pattern="/rest/meme/**" access="hasRole('USER')" />
+		<security:intercept-url method="PUT" pattern="/rest/meme/**" access="hasRole('PUBLISHER')" />
+		<security:intercept-url method="POST" pattern="/rest/meme/**" access="hasRole('PUBLISHER')" />
+		<security:intercept-url method="DELETE" pattern="/rest/meme/**" access="hasRole('PUBLISHER')" />
 	</security:http>
 
 	<bean id="unauthorizedEntryPoint" class="org.xored.edu.memorise.core.rest.UnauthorizedEntryPoint" />

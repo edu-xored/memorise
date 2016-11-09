@@ -1,7 +1,7 @@
 package org.xored.edu.memorise.rest.resources;
 
 import org.xored.edu.memorise.JsonViews;
-import org.xored.edu.memorise.api.journal.Memo;
+import org.xored.edu.memorise.api.meme.Meme;
 import org.xored.edu.memorise.impl.journal.JournalEntryDao;
 import org.xored.edu.memorise.api.user.Role;
 import org.codehaus.jackson.JsonGenerationException;
@@ -23,7 +23,7 @@ import java.util.List;
 
 
 @Component
-@Path("/journal")
+@Path("/meme")
 public class JournalEntryResource {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -45,7 +45,7 @@ public class JournalEntryResource {
 		} else {
 			viewWriter = this.mapper.writerWithView(JsonViews.User.class);
 		}
-		List<Memo> allEntries = this.journalEntryDao.findAll();
+		List<Meme> allEntries = this.journalEntryDao.findAll();
 
 		return viewWriter.writeValueAsString(allEntries);
 	}
@@ -53,10 +53,10 @@ public class JournalEntryResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Memo read(@PathParam("id") Long id) {
+	public Meme read(@PathParam("id") Long id) {
 		this.logger.info("read(id)");
 
-		Memo journalsEntry = this.journalEntryDao.find(id);
+		Meme journalsEntry = this.journalEntryDao.find(id);
 		if (journalsEntry == null) {
 			throw new WebApplicationException(404);
 		}
@@ -66,7 +66,7 @@ public class JournalEntryResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Memo create(Memo journalsEntry) {
+	public Meme create(Meme journalsEntry) {
 		this.logger.info("create(): " + journalsEntry);
 
 		return this.journalEntryDao.save(journalsEntry);
@@ -76,7 +76,7 @@ public class JournalEntryResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Memo update(@PathParam("id") Long id, Memo journalsEntry) {
+	public Meme update(@PathParam("id") Long id, Meme journalsEntry) {
 		this.logger.info("update(): " + journalsEntry);
 
 		return this.journalEntryDao.save(journalsEntry);

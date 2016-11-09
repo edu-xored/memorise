@@ -251,7 +251,7 @@ services.factory('UserService', function($resource) {
 
 services.factory('JournalService', function($resource) {
 
-	return $resource('rest/journal/:id', {id: '@id'});
+	return $resource('rest/meme/:id', {id: '@id'});
 });
 
 

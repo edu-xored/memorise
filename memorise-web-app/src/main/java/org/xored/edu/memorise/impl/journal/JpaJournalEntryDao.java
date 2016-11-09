@@ -1,6 +1,6 @@
 package org.xored.edu.memorise.impl.journal;
 
-import org.xored.edu.memorise.api.journal.Memo;
+import org.xored.edu.memorise.api.meme.Meme;
 import org.xored.edu.memorise.core.dao.JpaDao;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -20,30 +20,30 @@ import java.util.List;
  *
  * @author Daniil Efremov <daniil.efremov@gmail.com>
  */
-class JpaJournalEntryDao extends JpaDao<Memo, Long> implements JournalEntryDao {
+class JpaJournalEntryDao extends JpaDao<Meme, Long> implements JournalEntryDao {
 
 	public JpaJournalEntryDao() {
-		super(Memo.class);
+		super(Meme.class);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Memo> findAll()
+	public List<Meme> findAll()
 	{
 		final CriteriaBuilder builder = this.getEntityManager().getCriteriaBuilder();
-		final CriteriaQuery<Memo> criteriaQuery = builder.createQuery(Memo.class);
+		final CriteriaQuery<Meme> criteriaQuery = builder.createQuery(Meme.class);
 
-		Root<Memo> root = criteriaQuery.from(Memo.class);
+		Root<Meme> root = criteriaQuery.from(Meme.class);
 		criteriaQuery.orderBy(builder.desc(root.get("date")));
 
-		TypedQuery<Memo> typedQuery = this.getEntityManager().createQuery(criteriaQuery);
+		TypedQuery<Meme> typedQuery = this.getEntityManager().createQuery(criteriaQuery);
 		return typedQuery.getResultList();
 	}
 
 
 	@Override
 	@Transactional
-	public void uploadFile(Memo memo, InputStream bstream) {
+	public void uploadFile(Meme meme, InputStream bstream) {
 		Session session = getEntityManager().unwrap(Session.class);
 		try {
 			File tempFile = File.createTempFile("temp-file-name", ".tmp");
@@ -68,20 +68,20 @@ class JpaJournalEntryDao extends JpaDao<Memo, Long> implements JournalEntryDao {
 			}
 
 			Blob blob = Hibernate.getLobCreator(session).createBlob(new FileInputStream(tempFile), tempFile.length());
-			memo.setContent(blob);
-			save(memo);
+			meme.setContent(blob);
+			save(meme);
 		} catch (IOException e) {
-			throw new IllegalArgumentException("Error while saving file data to DB for " + memo.toString(), e);
+			throw new IllegalArgumentException("Error while saving file data to DB for " + meme.toString(), e);
 		}
 	}
 
 	@Override
 	@Transactional
-	public InputStream readFile(Memo memo)  {
+	public InputStream readFile(Meme meme)  {
 		try {
-			return memo.getContent().getBinaryStream();
+			return meme.getContent().getBinaryStream();
 		} catch (SQLException e) {
-			throw new RuntimeException("no any file found for " + memo,e);
+			throw new RuntimeException("no any file found for " + meme,e);
 		}
 	}
 

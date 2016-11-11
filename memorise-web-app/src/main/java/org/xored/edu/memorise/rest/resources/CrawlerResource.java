@@ -1,9 +1,11 @@
 package org.xored.edu.memorise.rest.resources;
 
+import org.slf4j.Logger;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.matchers.GroupMatcher;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,9 @@ import javax.ws.rs.Path;
 @Component
 @Path("/crawler")
 public class CrawlerResource {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final String crawlerJobDetailName = "MemoCrawlerJobDetail";
 
     @Autowired
@@ -23,6 +28,8 @@ public class CrawlerResource {
     @Path("/run")
 //	@Produces(MediaType.APPLICATION_JSON)
     public void runCrawler() throws SchedulerException {
+        this.logger.info("runCrawler()");
+        
         Scheduler scheduler = schedulerFactory.getScheduler();
 
         for (String groupName : scheduler.getJobGroupNames())

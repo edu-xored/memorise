@@ -1,10 +1,5 @@
 package org.xored.edu.memorise.rest.resources;
 
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.impl.matchers.GroupMatcher;
-import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.xored.edu.memorise.JsonViews;
 import org.xored.edu.memorise.api.journal.Memo;
 import org.xored.edu.memorise.impl.journal.JournalEntryDao;
@@ -38,9 +33,6 @@ public class JournalEntryResource {
 
 	@Autowired
 	private ObjectMapper mapper;
-
-	@Autowired
-	private SchedulerFactoryBean schedulerFactory;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -79,18 +71,6 @@ public class JournalEntryResource {
 
 		return this.journalEntryDao.save(journalsEntry);
 	}
-
-	@GET
-//	@Produces(MediaType.APPLICATION_JSON)
-	public void runCrawler() throws SchedulerException{
-		Scheduler scheduler = schedulerFactory.getScheduler();
-
-		for (String groupName : scheduler.getJobGroupNames())
-			for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName)))
-				if(jobKey.getName().equals("MemoCrawlerJobDetail"))
-					scheduler.triggerJob(jobKey);
-	}
-
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)

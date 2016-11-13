@@ -113,7 +113,7 @@
 	QUARTZ JOB SETUP
 	-->
 
-	<bean name="JobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+	<bean name="MemoCrawlerJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass" value="org.xored.edu.memorise.MemoCrawlerJob"/>
 		<property name="durability" value="true" />
 	</bean>
@@ -123,7 +123,7 @@
 	-->
 
 	<bean id="cronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="JobDetail" />
+		<property name="jobDetail" ref="MemoCrawlerJobDetail" />
 		<!-- job start every day at 3:00 !-->
 		<property name="cronExpression" value="0 0 3 * * ?" />
 	</bean>
@@ -135,7 +135,7 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="jobDetails">
 			<list>
-				<ref bean="JobDetail" />
+				<ref bean="MemoCrawlerJobDetail" />
 			</list>
 		</property>
 		<property name="triggers">

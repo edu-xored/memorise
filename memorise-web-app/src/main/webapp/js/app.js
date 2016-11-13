@@ -104,6 +104,9 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 			$cookieStore.remove('authToken');
 			$location.path("/login");
 		};
+
+		$rootScope.Crawler = function() {
+		}
 		
 		 /* Try getting valid user from cookie or go to login page */
 		var originalPath = $location.path();

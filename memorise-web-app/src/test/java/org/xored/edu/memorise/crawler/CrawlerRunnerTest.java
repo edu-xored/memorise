@@ -41,7 +41,7 @@ public class CrawlerRunnerTest {
 
     private CrawlConfig setCrawlConfig() {
         CrawlConfig crawlConfig = new CrawlConfig();
-        crawlConfig.setCrawlStorageFolder("src/resources/test/crawlerTemplateDirectory");
+        crawlConfig.setCrawlStorageFolder("src/resources/test/crawlerTemporaryDirectory");
         crawlConfig.setMaxDepthOfCrawling(1);
         crawlConfig.setMaxPagesToFetch(1);
         return crawlConfig;

@@ -1,19 +1,17 @@
 package org.xored.edu.memorise.crawler;
 
-import org.xored.edu.memorise.crawler.api.MatchingMemeCandidate;
-import org.xored.edu.memorise.crawler.api.MemeParser;
-import org.xored.edu.memorise.crawler.impl.SimpleMemeParserImpl;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.xored.edu.memorise.crawler.api.MatchingMemeCandidate;
+import org.xored.edu.memorise.crawler.api.MemeParser;
+import org.xored.edu.memorise.crawler.impl.SimpleMemeParserImpl;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -43,7 +41,7 @@ public class CrawlerRunnerTest {
 
     private CrawlConfig setCrawlConfig() {
         CrawlConfig crawlConfig = new CrawlConfig();
-        crawlConfig.setCrawlStorageFolder("/test");
+        crawlConfig.setCrawlStorageFolder("src/resources/test/crawlerTemplateDirectory");
         crawlConfig.setMaxDepthOfCrawling(1);
         crawlConfig.setMaxPagesToFetch(1);
         return crawlConfig;

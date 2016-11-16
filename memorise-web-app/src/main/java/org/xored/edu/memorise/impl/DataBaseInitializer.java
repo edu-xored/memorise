@@ -53,6 +53,17 @@ public class DataBaseInitializer {
 			memo.setTitle("This is Memo title " + i);
 			memo.setDescription("This is Memo detailed info " + i);
 			memo.setDate(new Date(timestamp));
+			memo.setStatus(0);
+			this.journalEntryDao.save(memo);
+			timestamp += 1000 * 60 * 60;
+		}
+
+		for (int i = 0; i < 10; i++) {
+			Memo memo = new Memo();
+			memo.setTitle("This is Memo title " + i + 10);
+			memo.setDescription("This is Memo detailed info " + i + 10);
+			memo.setDate(new Date(timestamp));
+			memo.setStatus(1);
 			this.journalEntryDao.save(memo);
 			timestamp += 1000 * 60 * 60;
 		}

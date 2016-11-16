@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 @Component
 @Path("/crawler")
@@ -26,10 +28,10 @@ public class CrawlerResource {
 
     @POST
     @Path("/run")
-//	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
     public void runCrawler() throws SchedulerException {
         this.logger.info("runCrawler()");
-        
+
         Scheduler scheduler = schedulerFactory.getScheduler();
 
         for (String groupName : scheduler.getJobGroupNames())

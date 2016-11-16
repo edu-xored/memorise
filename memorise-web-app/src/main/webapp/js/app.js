@@ -78,7 +78,7 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 		   
 		} ]
 		
-	).run(function($rootScope, $location, $cookieStore, UserService) {
+	).run(function($rootScope, $location, $cookieStore, UserService, $http) {
 		
 		/* Reset error when a new view is loaded */
 		$rootScope.$on('$viewContentLoaded', function() {
@@ -104,6 +104,10 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 			$cookieStore.remove('authToken');
 			$location.path("/login");
 		};
+
+		$rootScope.Crawler = function() {
+		    $http.post('/rest/crawler/run');
+		}
 		
 		 /* Try getting valid user from cookie or go to login page */
 		var originalPath = $location.path();

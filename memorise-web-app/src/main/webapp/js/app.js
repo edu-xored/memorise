@@ -78,7 +78,7 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 		   
 		} ]
 		
-	).run(function($rootScope, $location, $cookieStore, UserService) {
+	).run(function($rootScope, $location, $cookieStore, UserService, $http) {
 		
 		/* Reset error when a new view is loaded */
 		$rootScope.$on('$viewContentLoaded', function() {
@@ -106,6 +106,7 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 		};
 
 		$rootScope.Crawler = function() {
+		    $http.post('http://localhost:8080/rest/crawler/run');
 		}
 		
 		 /* Try getting valid user from cookie or go to login page */

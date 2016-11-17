@@ -126,7 +126,24 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 
 function IndexController($scope, JournalService) {
 
-	$scope.journalEntries = JournalService.query();
+	$scope.journalEntries = JournalService.query().sort(function (a,b) {
+        return (a.status > b.status) ? -1 : (a.status < b.status) ? 1 : 0;
+    });
+
+    $scope.checkboxStatusModel = {
+           archived: false,
+           actual: false,
+           candidate: false
+    };
+
+    $scope.filterMemosByAllStatuses = function(allMemos) {
+        for (status in $scope.checkboxStatusModel) {
+            allMemos = !($scope.checkboxStatusModel[status]) ? allMemos.filter(function(obj) {
+                return obj.status != status.toUpperCase();
+            }) : allMemos;
+        }
+        return allMemos;
+    };
 
 	$scope.deleteEntry = function(journalEntry) {
 		journalEntry.$remove(function() {

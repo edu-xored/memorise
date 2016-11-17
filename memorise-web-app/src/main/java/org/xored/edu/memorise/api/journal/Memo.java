@@ -37,8 +37,8 @@ public class Memo implements org.xored.edu.memorise.core.entity.Entity {
 	@Column
 	private String fileName;
 
-	@Column
-	private Integer status;
+	@Enumerated(EnumType.STRING)
+	private MemoStatus status;
 
 	@Column (length = 20000)
   @Lob
@@ -109,11 +109,11 @@ public class Memo implements org.xored.edu.memorise.core.entity.Entity {
 		this.content = content;
 	}
 
-	public Integer getStatus() {
+	public MemoStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(MemoStatus status) {
 		this.status = status;
 	}
 

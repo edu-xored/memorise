@@ -1,5 +1,6 @@
 package org.xored.edu.memorise.impl;
 
+import org.xored.edu.memorise.api.journal.MemoStatus;
 import org.xored.edu.memorise.impl.journal.JournalEntryDao;
 import org.xored.edu.memorise.impl.user.UserDao;
 import org.xored.edu.memorise.api.journal.Memo;
@@ -48,11 +49,32 @@ public class DataBaseInitializer {
 		this.userDao.save(publisher);
 
 		long timestamp = System.currentTimeMillis() - (1000 * 60 * 60 * 24);
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 5; i++) {
 			Memo memo = new Memo();
 			memo.setTitle("This is Memo title " + i);
 			memo.setDescription("This is Memo detailed info " + i);
 			memo.setDate(new Date(timestamp));
+			memo.setStatus(MemoStatus.ACTUAL);
+			this.journalEntryDao.save(memo);
+			timestamp += 1000 * 60 * 60;
+		}
+
+		for (int i = 0; i < 5; i++) {
+			Memo memo = new Memo();
+			memo.setTitle("This is Memo title " + (i + 5));
+			memo.setDescription("This is Memo detailed info " + (i + 5));
+			memo.setDate(new Date(timestamp));
+			memo.setStatus(MemoStatus.ARCHIVED);
+			this.journalEntryDao.save(memo);
+			timestamp += 1000 * 60 * 60;
+		}
+
+		for (int i = 0; i < 5; i++) {
+			Memo memo = new Memo();
+			memo.setTitle("This is Memo title " + (i + 10));
+			memo.setDescription("This is Memo detailed info " + (i + 10));
+			memo.setDate(new Date(timestamp));
+			memo.setStatus(MemoStatus.CANDIDATE);
 			this.journalEntryDao.save(memo);
 			timestamp += 1000 * 60 * 60;
 		}

@@ -26,7 +26,7 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 				templateUrl: 'partials/login.html',
 				controller: LoginController
 			});
-			
+
 			$routeProvider.otherwise({
 				templateUrl: 'partials/index.html',
 				controller: IndexController

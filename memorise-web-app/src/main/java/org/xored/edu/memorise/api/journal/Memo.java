@@ -37,6 +37,9 @@ public class Memo implements org.xored.edu.memorise.core.entity.Entity {
 	@Column
 	private String fileName;
 
+	@Enumerated(EnumType.STRING)
+	private MemoStatus status;
+
 	@Column (length = 20000)
   @Lob
 	@Basic(fetch=FetchType.LAZY)
@@ -104,6 +107,14 @@ public class Memo implements org.xored.edu.memorise.core.entity.Entity {
 
 	public void setContent(Blob content) {
 		this.content = content;
+	}
+
+	public MemoStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(MemoStatus status) {
+		this.status = status;
 	}
 
 	@Override

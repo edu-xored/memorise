@@ -6,7 +6,12 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 				templateUrl: 'partials/create.html',
 				controller: CreateController
 			});
-			
+
+			$routeProvider.when('/register', {
+                templateUrl: 'partials/register.html',
+                controller: RegisterController
+            });
+
 			$routeProvider.when('/edit/:id', {
 				templateUrl: 'partials/edit.html',
 				controller: EditController
@@ -97,7 +102,16 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 			
 			return $rootScope.user.roles[role];
 		};
-		
+
+		$rootScope.tryShowMemos = function() {
+		    if($rootScope.hasRole('ROLE_USER')) {
+		        $location.path("/");
+		    }
+		    else {
+                $location.path("/login");
+		    }
+		}
+
 		$rootScope.logout = function() {
 			delete $rootScope.user;
 			delete $rootScope.authToken;
@@ -131,7 +145,7 @@ function IndexController($scope, JournalService) {
     });
 
     $scope.checkboxStatusModel = {
-           archived: false,
+           archived: true,
            actual: false,
            candidate: false
     };
@@ -234,6 +248,17 @@ function CreateController($scope, $location, JournalService) {
 	};
 };
 
+function RegisterController($scope, $rootScope, $location, $cookieStore, UserService) {
+
+	$scope.register = function() {
+		UserService.register($.param({username: $scope.username, password: $scope.password}), function(authenticationResult) {
+			UserService.get(function(user) {
+				$rootScope.user = user;
+				$location.path("/");
+			});
+		});
+	};
+};
 
 function LoginController($scope, $rootScope, $location, $cookieStore, UserService) {
 	
@@ -266,6 +291,12 @@ services.factory('UserService', function($resource) {
 					params: {'action' : 'authenticate'},
 					headers : {'Content-Type': 'application/x-www-form-urlencoded'}
 				},
+
+				register: {
+                    method: 'POST',
+                    params: {'action' : 'register'},
+                    headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+				}
 			}
 		);
 });

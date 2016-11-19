@@ -1,19 +1,17 @@
 package org.xored.edu.memorise.impl.user;
 
-import java.util.List;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+import org.xored.edu.memorise.api.user.User;
+import org.xored.edu.memorise.core.dao.JpaDao;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
-
-import org.xored.edu.memorise.api.user.User;
-import org.xored.edu.memorise.core.dao.JpaDao;
-
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 /**
  * @author Daniil Efremov <daniil.efremov@gmail.com>
@@ -54,5 +52,4 @@ public class JpaUserDao extends JpaDao<User, Long> implements UserDao {
 
 		return users.iterator().next();
 	}
-
 }

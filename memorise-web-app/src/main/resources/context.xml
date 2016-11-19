@@ -124,8 +124,8 @@
 
 	<bean id="cronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="MemoCrawlerJobDetail" />
-		<!-- job start every day at 3:00 !-->
-		<property name="cronExpression" value="0 0 3 * * ?" />
+		<!-- job start every 10 min !-->
+		<property name="cronExpression" value="0 0/10 * * * ?" />
 	</bean>
 
 	<!--

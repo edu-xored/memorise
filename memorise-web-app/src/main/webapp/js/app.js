@@ -106,7 +106,12 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 		};
 
 		$rootScope.Crawler = function() {
-		    $http.post('/rest/crawler/run');
+		    alert('You run Crawler');
+		    $http.post('/rest/crawler/run')
+		        .success(function(){
+		        })
+		        .error(function(){
+		        });
 		}
 		
 		 /* Try getting valid user from cookie or go to login page */

@@ -38,7 +38,7 @@
 				<ul class="nav navbar-nav">
 					<li><a href="#!/login" ng-hide="hasRole('ROLE_USER')">Login</a></li>
 				</ul>
-				<ul class="nav navbar-nav">
+				<ul class="nav navbar-nav" ng-show="hasRole('ROLE_PUBLISHER')">
 					<li><a href="" ng-click="Crawler()"> Crawler</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">

@@ -131,7 +131,7 @@ function IndexController($scope, JournalService) {
     });
 
     $scope.checkboxStatusModel = {
-           archived: false,
+           archived: true,
            actual: false,
            candidate: false
     };

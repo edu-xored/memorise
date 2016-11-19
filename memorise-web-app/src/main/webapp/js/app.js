@@ -250,13 +250,22 @@ function CreateController($scope, $location, JournalService) {
 
 function RegisterController($scope, $rootScope, $location, $cookieStore, UserService) {
 
+
+
 	$scope.register = function() {
-		UserService.register($.param({username: $scope.username, password: $scope.password}), function(authenticationResult) {
-			UserService.get(function(user) {
-				$rootScope.user = user;
-				$location.path("/");
-			});
-		});
+		UserService.register($.param({username: $scope.registerUsername, password: $scope.registerPassword}),
+		    function() {
+		        UserService.get(function(user) {
+                                $rootScope.user = user;
+                                $location.path("/");
+                            });
+		    }
+		);
+		UserService.authenticate($.param({username: $scope.registerUsername, password: $scope.registerPassword}), function(authenticationResult) {
+            var authToken = authenticationResult.token;
+            $rootScope.authToken = authToken;
+                $cookieStore.put('authToken', authToken);
+        });
 	};
 };
 

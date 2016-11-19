@@ -92,13 +92,13 @@ public class UserResource
 	@Path("register")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public TokenTransfer register(@FormParam("username") String username,
+	public void register(@FormParam("username") String username,
 						   @FormParam("password") String password) {
 		User userUser = new User(username, this.passwordEncoder.encode(password));
 		userUser.addRole(Role.USER);
 		this.userDao.save(userUser);
 
-		return authenticate(username, password);
+		//return authenticate(username, password);
 	}
 
 	private Map<String, Boolean> createRoleMap(UserDetails userDetails)

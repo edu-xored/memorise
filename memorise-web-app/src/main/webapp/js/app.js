@@ -109,11 +109,11 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 		$rootScope.Crawler = function() {
 		    $rootScope.crawlBtnIsDisabled = true;
 		    $http.post('/rest/crawler/run')
-		        .success(function(){
+		        .then(function success(response) {
 		            alert('Crawler start successfully');
-		        })
-		        .error(function(){
-		            alert('Crawler error');
+		        }, function error(response) {
+		            alert('Crawler error\nstatus: ' + response.status +
+		                '\nand response: ' + response.statusText);
 		        });
 		}
 		

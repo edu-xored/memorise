@@ -51,7 +51,10 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 			      
 			        		if (status == 401) {
 			        			$location.path( "/login" );
-			        		} else {
+			        		} else if (status == 500) {
+			        		    $rootScope.error = "User with the same name is already exist";
+			        		}
+			        		else {
 			        			$rootScope.error = method + " on " + url + " failed with status " + status;
 			        		}
 			              
@@ -249,24 +252,17 @@ function CreateController($scope, $location, JournalService) {
 };
 
 function RegisterController($scope, $rootScope, $location, $cookieStore, UserService) {
-
-
-
 	$scope.register = function() {
 		UserService.register($.param({username: $scope.registerUsername, password: $scope.registerPassword}),
 		    function() {
-		        UserService.get(function(user) {
-                                $rootScope.user = user;
-                                $location.path("/");
-                            });
+		        $location.path("/login");
 		    }
 		);
-		UserService.authenticate($.param({username: $scope.registerUsername, password: $scope.registerPassword}), function(authenticationResult) {
-            var authToken = authenticationResult.token;
-            $rootScope.authToken = authToken;
-                $cookieStore.put('authToken', authToken);
-        });
 	};
+
+    $scope.isUserEmpty = function() {
+        return !$scope.registerUsername || !$scope.registerPassword;
+    }
 };
 
 function LoginController($scope, $rootScope, $location, $cookieStore, UserService) {

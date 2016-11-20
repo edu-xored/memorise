@@ -39,7 +39,7 @@
 					<li><a href="#!/login" ng-hide="hasRole('ROLE_USER')">Login</a></li>
 				</ul>
 				<ul class="nav navbar-nav" ng-show="hasRole('ROLE_PUBLISHER')">
-					<li><a href="" ng-click="Crawler()"> Crawler</a></li>
+					<li><a href="" ng-click="crawlBtnIsDisabled || Crawler()" ng-disabled="crawlBtnIsDisabled">Crawler</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown" ng-show="hasRole('ROLE_USER')">

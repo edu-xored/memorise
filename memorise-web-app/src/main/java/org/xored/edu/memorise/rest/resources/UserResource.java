@@ -94,11 +94,13 @@ public class UserResource
 	@Produces(MediaType.APPLICATION_JSON)
 	public void register(@FormParam("username") String username,
 						   @FormParam("password") String password) {
-		User userUser = new User(username, this.passwordEncoder.encode(password));
-		userUser.addRole(Role.USER);
-		this.userDao.save(userUser);
+		save(username, password);
+	}
 
-		//return authenticate(username, password);
+	void save(@FormParam("username") String username, @FormParam("password") String password) {
+		User user = new User(username, this.passwordEncoder.encode(password));
+		user.addRole(Role.USER);
+		this.userDao.save(user);
 	}
 
 	private Map<String, Boolean> createRoleMap(UserDetails userDetails)

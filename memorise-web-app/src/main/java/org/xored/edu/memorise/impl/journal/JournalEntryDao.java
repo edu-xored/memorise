@@ -13,8 +13,4 @@ import java.io.InputStream;
  */
 public interface JournalEntryDao extends Dao<Memo, Long> {
 
- 	void uploadFile(Memo memo, InputStream bstream);
-
- 	InputStream readFile(Memo memo) ;
-
 }

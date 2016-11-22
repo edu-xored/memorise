@@ -1,20 +1,5 @@
 package org.xored.edu.memorise.rest.resources;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-
-import org.xored.edu.memorise.core.rest.TokenUtils;
-import org.xored.edu.memorise.transfer.TokenTransfer;
-import org.xored.edu.memorise.transfer.UserTransfer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,13 +9,30 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.xored.edu.memorise.api.user.Role;
+import org.xored.edu.memorise.api.user.User;
+import org.xored.edu.memorise.core.rest.TokenUtils;
+import org.xored.edu.memorise.impl.user.UserDao;
+import org.xored.edu.memorise.transfer.TokenTransfer;
+import org.xored.edu.memorise.transfer.UserTransfer;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Component
 @Path("/user")
 public class UserResource
 {
+	@Autowired
+	private UserDao userDao;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private UserDetailsService userService;
@@ -58,7 +60,6 @@ public class UserResource
 
 		return new UserTransfer(userDetails.getUsername(), this.createRoleMap(userDetails));
 	}
-
 
 	/**
 	 * Authenticates a user and creates an authentication token.
@@ -88,6 +89,19 @@ public class UserResource
 		return new TokenTransfer(TokenUtils.createToken(userDetails));
 	}
 
+	@Path("register")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public void register(@FormParam("username") String username,
+						   @FormParam("password") String password) {
+		save(username, password);
+	}
+
+	void save(@FormParam("username") String username, @FormParam("password") String password) {
+		User user = new User(username, this.passwordEncoder.encode(password));
+		user.addRole(Role.USER);
+		this.userDao.save(user);
+	}
 
 	private Map<String, Boolean> createRoleMap(UserDetails userDetails)
 	{

@@ -37,6 +37,8 @@ public class MemoCrawlerJob extends QuartzJobBean{
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+		this.logger.info("MemoCrawlerJob is running");
+		
 		//if crawler already has been running, skip it
 		if (!crawlerExecuteLock.tryLock())
 			return;

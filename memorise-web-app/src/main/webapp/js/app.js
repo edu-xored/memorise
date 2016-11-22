@@ -6,7 +6,12 @@ angular.module('memoriseApp', ['ngRoute', 'ngCookies', 'memoriseApp.services'])
 				templateUrl: 'partials/create.html',
 				controller: CreateController
 			});
-			
+
+			$routeProvider.when('/register', {
+                templateUrl: 'partials/register.html',
+                controller: RegisterController
+            });
+
 			$routeProvider.when('/edit/:id', {
 				templateUrl: 'partials/edit.html',
 				controller: EditController
@@ -36,7 +41,10 @@ angular.module('memoriseApp', ['ngRoute', 'ngCookies', 'memoriseApp.services'])
 			      
 			        		if (status == 401) {
 			        			$location.path( "/login" );
-			        		} else {
+			        		} else if (status == 500) {
+			        		    $rootScope.error = "User with the same name is already exist";
+			        		}
+			        		else {
 			        			$rootScope.error = method + " on " + url + " failed with status " + status;
 			        		}
 			              
@@ -87,7 +95,16 @@ angular.module('memoriseApp', ['ngRoute', 'ngCookies', 'memoriseApp.services'])
 			
 			return $rootScope.user.roles[role];
 		};
-		
+
+		$rootScope.tryShowMemos = function() {
+		    if($rootScope.hasRole('ROLE_USER')) {
+		        $location.path("/");
+		    }
+		    else {
+                $location.path("/login");
+		    }
+		}
+
 		$rootScope.logout = function() {
 			delete $rootScope.user;
 			delete $rootScope.authToken;
@@ -169,6 +186,19 @@ function CreateController($scope, $location, MemoService) {
 	};
 };
 
+function RegisterController($scope, $rootScope, $location, $cookieStore, UserService) {
+	$scope.register = function() {
+		UserService.register($.param({username: $scope.registerUsername, password: $scope.registerPassword}),
+		    function() {
+		        $location.path("/login");
+		    }
+		);
+	};
+
+    $scope.isUserEmpty = function() {
+        return !$scope.registerUsername || !$scope.registerPassword;
+    }
+};
 
 function LoginController($scope, $rootScope, $location, $cookieStore, UserService) {
 	
@@ -201,6 +231,12 @@ services.factory('UserService', function($resource) {
 					params: {'action' : 'authenticate'},
 					headers : {'Content-Type': 'application/x-www-form-urlencoded'}
 				},
+
+				register: {
+                    method: 'POST',
+                    params: {'action' : 'register'},
+                    headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+				}
 			}
 		);
 });

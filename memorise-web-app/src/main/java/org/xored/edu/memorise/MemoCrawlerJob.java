@@ -16,6 +16,8 @@ import org.xored.edu.memorise.crawler.impl.SimpleMemeParserImpl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MemoCrawlerJob extends QuartzJobBean{
 
@@ -25,6 +27,8 @@ public class MemoCrawlerJob extends QuartzJobBean{
 
 	private final List<String> seeds = Arrays.asList("http://the-flow.ru/videos/yelawolf-shadows/");
 
+	private static Lock crawlerExecuteLock = new ReentrantLock();
+
 	private final String crawlerTemoraryDirectory= "src/resources/test/crawlerTemporaryDirectory";
 	private final int numberOfCrawlers = 1;
 	private final int MaxDepthOfCrawling =1;
@@ -33,33 +37,38 @@ public class MemoCrawlerJob extends QuartzJobBean{
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        logger.info("MemoCrawlerJob is running");
-        long startTime, workingTime;
+		//if crawler already has been running, skip it
+		if (!crawlerExecuteLock.tryLock())
+			return;
+		try {
+			logger.info("MemoCrawlerJob is running");
+			long startTime, workingTime;
 
-        MemeParser memeParser;
-        CrawlerRunner crawlerRunner;
-        CrawlerSettings crawlerSettings;
-        MemeCandidate memeCandidate;
+			MemeParser memeParser;
+			CrawlerRunner crawlerRunner;
+			CrawlerSettings crawlerSettings;
+			MemeCandidate memeCandidate;
 
-        startTime = System.currentTimeMillis();
+			startTime = System.currentTimeMillis();
 
-        memeParser = new SimpleMemeParserImpl();
-        crawlerRunner = new CrawlerRunner(matchingMemeCandidate, memeParser);
-        CrawlConfig crawlConfig = setCrawlConfig();
-        crawlerSettings = new CrawlerSettings(crawlConfig, numberOfCrawlers, seeds);
-        memeCandidate = new MemeCandidate(nameMemeCandidate);
+			memeParser = new SimpleMemeParserImpl();
+			crawlerRunner = new CrawlerRunner(matchingMemeCandidate, memeParser);
+			CrawlConfig crawlConfig = setCrawlConfig();
+			crawlerSettings = new CrawlerSettings(crawlConfig, numberOfCrawlers, seeds);
+			memeCandidate = new MemeCandidate(nameMemeCandidate);
 
-        try {
-            crawlerRunner.run(crawlerSettings, memeCandidate);
-        } catch (Exception e) {
+			crawlerRunner.run(crawlerSettings, memeCandidate);
+
+			workingTime = System.currentTimeMillis() - startTime;
+			logger.info("Crawler has worked for " + workingTime + " milliseconds");
+		} catch (Exception e) {
 			logger.info("Crawler crash");
 			//TODO: add more info about cause crawler error
 			throw new JobExecutionException("Crawler error");
-        }
-
-        workingTime = System.currentTimeMillis() - startTime;
-        logger.info("Crawler has worked for " + workingTime + " milliseconds");
-    }
+		} finally {
+			crawlerExecuteLock.unlock();
+		}
+	}
 
     private CrawlConfig setCrawlConfig() {
         CrawlConfig crawlConfig = new CrawlConfig();

@@ -105,9 +105,7 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 			$location.path("/login");
 		};
 
-        $rootScope.crawlBtnIsDisabled = false;
 		$rootScope.Crawler = function() {
-		    $rootScope.crawlBtnIsDisabled = true;
 		    $http.post('/rest/crawler/run')
 		        .then(function success(response) {
 		            alert('Crawler start successfully');

@@ -23,7 +23,7 @@ public class CrawlerResource {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	private final String crawlerJobDetailName = "MemoCrawlerJobDetail";
+	private final String CRAWLER_JOB_DETAIL_NAME = "MemoCrawlerJobDetail";
 
 	@Autowired
 	private SchedulerFactoryBean schedulerFactory;
@@ -39,7 +39,7 @@ public class CrawlerResource {
 		for (String groupName : scheduler.getJobGroupNames())
 			for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName)))
 
-				if (crawlerJobDetailName.equals(jobKey.getName())) {
+				if (CRAWLER_JOB_DETAIL_NAME.equals(jobKey.getName())) {
 					for (JobExecutionContext runningJob : scheduler.getCurrentlyExecutingJobs())
 						if (runningJob.getJobDetail().getKey().equals(jobKey))
 							return Response.status(429).build();

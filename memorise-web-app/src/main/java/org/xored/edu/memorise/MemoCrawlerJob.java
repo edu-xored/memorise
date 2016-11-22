@@ -25,20 +25,20 @@ public class MemoCrawlerJob extends QuartzJobBean{
 
     MatchingMemeCandidate matchingMemeCandidate;
 
-	private final List<String> seeds = Arrays.asList("http://the-flow.ru/videos/yelawolf-shadows/");
+	private final List<String> SEEDS = Arrays.asList("http://the-flow.ru/videos/yelawolf-shadows/");
 
 	private static Lock crawlerExecuteLock = new ReentrantLock();
 
-	private final String crawlerTemoraryDirectory= "src/resources/test/crawlerTemporaryDirectory";
-	private final int numberOfCrawlers = 1;
-	private final int MaxDepthOfCrawling =1;
-	private final int MaxPagesToFetch = 1;
-	private final String nameMemeCandidate = "Wolf";
+	private final String CRAWL_TEMP_DIR = "src/resources/test/crawlerTemporaryDirectory";
+	private final int NUMBER_OF_CRAWLERS = 1;
+	private final int MAX_DEPTH_OF_CRAWLING =1;
+	private final int MAX_PAGES_TO_FETCH = 1;
+	private final String MEME_CANDIDATE_NAME = "Wolf";
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		this.logger.info("MemoCrawlerJob is running");
-		
+
 		//if crawler already has been running, skip it
 		if (!crawlerExecuteLock.tryLock())
 			return;
@@ -56,8 +56,8 @@ public class MemoCrawlerJob extends QuartzJobBean{
 			memeParser = new SimpleMemeParserImpl();
 			crawlerRunner = new CrawlerRunner(matchingMemeCandidate, memeParser);
 			CrawlConfig crawlConfig = setCrawlConfig();
-			crawlerSettings = new CrawlerSettings(crawlConfig, numberOfCrawlers, seeds);
-			memeCandidate = new MemeCandidate(nameMemeCandidate);
+			crawlerSettings = new CrawlerSettings(crawlConfig, NUMBER_OF_CRAWLERS, SEEDS);
+			memeCandidate = new MemeCandidate(MEME_CANDIDATE_NAME);
 
 			crawlerRunner.run(crawlerSettings, memeCandidate);
 
@@ -74,9 +74,9 @@ public class MemoCrawlerJob extends QuartzJobBean{
 
     private CrawlConfig setCrawlConfig() {
         CrawlConfig crawlConfig = new CrawlConfig();
-        crawlConfig.setCrawlStorageFolder(crawlerTemoraryDirectory);
-        crawlConfig.setMaxDepthOfCrawling(MaxDepthOfCrawling);
-        crawlConfig.setMaxPagesToFetch(MaxPagesToFetch);
+        crawlConfig.setCrawlStorageFolder(CRAWL_TEMP_DIR);
+        crawlConfig.setMaxDepthOfCrawling(MAX_DEPTH_OF_CRAWLING);
+        crawlConfig.setMaxPagesToFetch(MAX_PAGES_TO_FETCH);
         return crawlConfig;
     }
 }

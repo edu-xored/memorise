@@ -147,6 +147,8 @@ function EditController($scope, $routeParams, $location, JournalService) {
 
 	$scope.journalEntry = JournalService.get({id: $routeParams.id});
 
+	$scope.statuses = ["ARCHIVED", "ACTUAL", "CANDIDATE"];
+
 	$scope.save = function() {
 		$scope.journalEntry.$save(function() {
 			$location.path('/');
@@ -157,6 +159,8 @@ function EditController($scope, $routeParams, $location, JournalService) {
 function CreateController($scope, $location, JournalService) {
 
 	$scope.journalEntry = new JournalService();
+
+	$scope.statuses = ["ARCHIVED", "ACTUAL", "CANDIDATE"];
 
 	$scope.save = function() {
 		$scope.journalEntry.$save(function() {

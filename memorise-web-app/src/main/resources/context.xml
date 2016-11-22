@@ -97,7 +97,6 @@
 		<security:csrf disabled="true"/>
 		<security:custom-filter ref="authenticationTokenProcessingFilter" position="PRE_AUTH_FILTER" />
 		<security:intercept-url pattern="/rest/user/authenticate" access="permitAll" />
-		<!--<security:intercept-url method="GET" pattern="/rest/memo/**" access="hasRole('USER')" />-->
 		<security:intercept-url method="PUT" pattern="/rest/memo/**" access="hasRole('PUBLISHER')" />
 		<security:intercept-url method="POST" pattern="/rest/memo/**" access="hasRole('PUBLISHER')" />
 		<security:intercept-url method="DELETE" pattern="/rest/memo/**" access="hasRole('PUBLISHER')" />

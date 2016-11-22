@@ -124,16 +124,16 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 		$rootScope.initialized = true;
 	});
 
-function IndexController($scope, JournalService) {
+function IndexController($rootScope, $scope, JournalService) {
 
 	$scope.journalEntries = JournalService.query().sort(function (a,b) {
         return (a.status > b.status) ? -1 : (a.status < b.status) ? 1 : 0;
     });
 
     $scope.checkboxStatusModel = {
-           archived: true,
-           actual: false,
-           candidate: false
+           archived: !$rootScope.hasRole('ROLE_USER'),
+           actual: $rootScope.hasRole('ROLE_USER'),
+           candidate: $rootScope.hasRole('ROLE_PUBLISHER')
     };
 
     $scope.filterMemosByAllStatuses = function(allMemos) {

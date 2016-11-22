@@ -58,7 +58,7 @@
 
 	<context:component-scan base-package="org.xored.edu.memorise.core.dao"/>
 
-	<bean id="journalEntryDao" class="com.daniilefremov.medicaljournals.impl.memo.JpaJournalEntryDao">
+	<bean id="memoEntryDao" class="com.daniilefremov.medicaljournals.impl.memo.JpaJournalEntryDao">
 	</bean>
 
 	<bean id="userDao" class="com.daniilefremov.medicaljournals.impl.user.JpaUserDao">
@@ -66,7 +66,7 @@
 
 	<bean id="dataBaseInitializer" class="com.daniilefremov.medicaljournals.impl.DataBaseInitializer" init-method="initDataBase">
 		<constructor-arg ref="userDao" />
-		<constructor-arg ref="journalEntryDao" />
+		<constructor-arg ref="memoEntryDao" />
 		<constructor-arg ref="passwordEncoder" />
 	</bean>
 

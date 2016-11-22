@@ -1,9 +1,9 @@
 package org.xored.edu.memorise.impl;
 
-import org.xored.edu.memorise.api.journal.MemoStatus;
-import org.xored.edu.memorise.impl.journal.JournalEntryDao;
+import org.xored.edu.memorise.api.memo.MemoStatus;
+import org.xored.edu.memorise.impl.memo.MemoEntryDao;
 import org.xored.edu.memorise.impl.user.UserDao;
-import org.xored.edu.memorise.api.journal.Memo;
+import org.xored.edu.memorise.api.memo.Memo;
 import org.xored.edu.memorise.api.user.Role;
 import org.xored.edu.memorise.api.user.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class DataBaseInitializer {
 
-	private JournalEntryDao journalEntryDao;
+	private MemoEntryDao memoEntryDao;
 
 	private UserDao userDao;
 
@@ -30,10 +30,10 @@ public class DataBaseInitializer {
 
 	public DataBaseInitializer(
 			UserDao userDao,
-			JournalEntryDao journalEntryDao,
+			MemoEntryDao memoEntryDao,
 			PasswordEncoder passwordEncoder) {
 		this.userDao = userDao;
-		this.journalEntryDao = journalEntryDao;
+		this.memoEntryDao = memoEntryDao;
 		this.passwordEncoder = passwordEncoder;
 	}
 
@@ -55,7 +55,7 @@ public class DataBaseInitializer {
 			memo.setDescription("This is Memo detailed info " + i);
 			memo.setDate(new Date(timestamp));
 			memo.setStatus(MemoStatus.ACTUAL);
-			this.journalEntryDao.save(memo);
+			this.memoEntryDao.save(memo);
 			timestamp += 1000 * 60 * 60;
 		}
 
@@ -65,7 +65,7 @@ public class DataBaseInitializer {
 			memo.setDescription("This is Memo detailed info " + (i + 5));
 			memo.setDate(new Date(timestamp));
 			memo.setStatus(MemoStatus.ARCHIVED);
-			this.journalEntryDao.save(memo);
+			this.memoEntryDao.save(memo);
 			timestamp += 1000 * 60 * 60;
 		}
 
@@ -75,7 +75,7 @@ public class DataBaseInitializer {
 			memo.setDescription("This is Memo detailed info " + (i + 10));
 			memo.setDate(new Date(timestamp));
 			memo.setStatus(MemoStatus.CANDIDATE);
-			this.journalEntryDao.save(memo);
+			this.memoEntryDao.save(memo);
 			timestamp += 1000 * 60 * 60;
 		}
 	}

@@ -1,4 +1,4 @@
-angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.services'])
+angular.module('memoriseApp', ['ngRoute', 'ngCookies', 'memoriseApp.services'])
 	.config(
 		[ '$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
 			
@@ -6,20 +6,15 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 				templateUrl: 'partials/create.html',
 				controller: CreateController
 			});
-			
+
+			$routeProvider.when('/register', {
+                templateUrl: 'partials/register.html',
+                controller: RegisterController
+            });
+
 			$routeProvider.when('/edit/:id', {
 				templateUrl: 'partials/edit.html',
 				controller: EditController
-			});
-
-			$routeProvider.when('/upload/:id', {
-				templateUrl: 'partials/upload.html',
-				controller: UploadController
-			});
-
-			$routeProvider.when('/read/:id', {
-				templateUrl: 'partials/read.html',
-				controller: ReadController
 			});
 
 			$routeProvider.when('/login', {
@@ -46,7 +41,10 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 			      
 			        		if (status == 401) {
 			        			$location.path( "/login" );
-			        		} else {
+			        		} else if (status == 500) {
+			        		    $rootScope.error = "User with the same name is already exist";
+			        		}
+			        		else {
 			        			$rootScope.error = method + " on " + url + " failed with status " + status;
 			        		}
 			              
@@ -64,7 +62,7 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 		        		var isRestCall = config.url.indexOf('rest') == 0;
 		        		if (isRestCall && angular.isDefined($rootScope.authToken)) {
 		        			var authToken = $rootScope.authToken;
-		        			if (medicalJournalAppConfig.useAuthTokenHeader) {
+		        			if (memoriseAppConfig.useAuthTokenHeader) {
 		        				config.headers['X-Auth-Token'] = authToken;
 		        			} else {
 		        				config.url = config.url + "?token=" + authToken;
@@ -97,7 +95,16 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 			
 			return $rootScope.user.roles[role];
 		};
-		
+
+		$rootScope.tryShowMemos = function() {
+		    if($rootScope.hasRole('ROLE_USER')) {
+		        $location.path("/");
+		    }
+		    else {
+                $location.path("/login");
+		    }
+		}
+
 		$rootScope.logout = function() {
 			delete $rootScope.user;
 			delete $rootScope.authToken;
@@ -130,16 +137,16 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 		$rootScope.initialized = true;
 	});
 
-function IndexController($scope, JournalService) {
+function IndexController($rootScope, $scope, MemoService) {
 
-	$scope.journalEntries = JournalService.query().sort(function (a,b) {
+	$scope.memoEntries = MemoService.query().sort(function (a, b) {
         return (a.status > b.status) ? -1 : (a.status < b.status) ? 1 : 0;
     });
 
     $scope.checkboxStatusModel = {
-           archived: true,
-           actual: false,
-           candidate: false
+           archived: !$rootScope.hasRole('ROLE_USER'),
+           actual: $rootScope.hasRole('ROLE_USER'),
+           candidate: $rootScope.hasRole('ROLE_PUBLISHER')
     };
 
     $scope.filterMemosByAllStatuses = function(allMemos) {
@@ -151,95 +158,53 @@ function IndexController($scope, JournalService) {
         return allMemos;
     };
 
-	$scope.deleteEntry = function(journalEntry) {
-		journalEntry.$remove(function() {
-			$scope.journalEntries = JournalService.query();
+	$scope.deleteEntry = function(memoEntry) {
+		memoEntry.$remove(function() {
+			$scope.memoEntries = MemoService.query();
 		});
 	};
 };
 
 
-function EditController($scope, $routeParams, $location, JournalService, fileUpload) {
+function EditController($scope, $routeParams, $location, MemoService) {
 
-	$scope.journalEntry = JournalService.get({id: $routeParams.id});
+	$scope.memoEntry = MemoService.get({id: $routeParams.id});
 
-	$scope.save = function() {
-		$scope.journalEntry.$save(function() {
-			$location.path('/');
-		});
-	};
-
-	$scope.uploadFile = function(){
-     var file = $scope.myFile;
-     console.log('file is ' );
-     console.dir(file);
-     var uploadUrl = "/rest/file/" +  $routeParams.id + "/upload";
-     fileUpload.uploadFileToUrl(file, uploadUrl);
- };
-
-};
-
-
-function ReadController($scope, $routeParams, $location, DownloadJournalContentService, JournalService) {
-
-	$scope.journalEntry = JournalService.get({id: $routeParams.id});
-	$scope.buildPDF = function() {
-	                $http.get('/rest/' + $routeParams.id + '/download',{headers: {'AccessKeyId': 'accesskey'}, responseType: 'arraybuffer'})
-	                    .success(function (data) {
-	                        var file = new Blob([data], {type: 'application/pdf'});
-	                        var fileURL = URL.createObjectURL(file);
-	                        $window.open(fileURL);
-	                    }
-	                );
-	            };
-};
-
-var app = angular.module('ngpdfviewerApp', [ 'ngPDFViewer' ]);
-app.requires.push('ngPDFViewer');
-
-app.controller('TestCtrl', [ '$scope', 'PDFViewerService', function($scope, pdf) {
-    $scope.viewer = pdf.Instance("viewer");
-
-    $scope.nextPage = function() {
-        $scope.viewer.nextPage();
-    };
-
-    $scope.prevPage = function() {
-        $scope.viewer.prevPage();
-    };
-
-    $scope.pageLoaded = function(curPage, totalPages) {
-        $scope.currentPage = curPage;
-        $scope.totalPages = totalPages;
-    };
-}]);
-
-function UploadController($scope, $routeParams, $location, JournalService, fileUpload) {
-
-	$scope.journalEntry = JournalService.get({id: $routeParams.id});
-
-	$scope.uploadFile = function(){
-     var file = $scope.myFile;
-     console.log('file is ' );
-     console.dir(file);
-     var uploadUrl = "/rest/file/" +  $routeParams.id + "/upload";
-     fileUpload.uploadFileToUrl(file, uploadUrl);
-     $location.path('/');
- };
-};
-
-
-function CreateController($scope, $location, JournalService) {
-
-	$scope.journalEntry = new JournalService();
+	$scope.statuses = ["ARCHIVED", "ACTUAL", "CANDIDATE"];
 
 	$scope.save = function() {
-		$scope.journalEntry.$save(function() {
+		$scope.memoEntry.$save(function() {
 			$location.path('/');
 		});
 	};
 };
 
+function CreateController($scope, $location, MemoService) {
+
+	$scope.memoEntry = new MemoService();
+
+	$scope.statuses = ["ARCHIVED", "ACTUAL", "CANDIDATE"];
+
+	$scope.save = function() {
+		$scope.memoEntry.$save(function() {
+			$location.path('/');
+		});
+	};
+};
+
+function RegisterController($scope, $rootScope, $location, $cookieStore, UserService) {
+	$scope.register = function() {
+		UserService.register($.param({username: $scope.registerUsername, password: $scope.registerPassword}),
+		    function() {
+		        $location.path("/login");
+		    }
+		);
+	};
+
+    $scope.isUserEmpty = function() {
+        return !$scope.registerUsername || !$scope.registerPassword;
+    }
+};
 
 function LoginController($scope, $rootScope, $location, $cookieStore, UserService) {
 	
@@ -261,7 +226,7 @@ function LoginController($scope, $rootScope, $location, $cookieStore, UserServic
 };
 
 
-var services = angular.module('medicaljournalApp.services', ['ngResource']);
+var services = angular.module('memoriseApp.services', ['ngResource']);
 
 services.factory('UserService', function($resource) {
 	
@@ -272,60 +237,19 @@ services.factory('UserService', function($resource) {
 					params: {'action' : 'authenticate'},
 					headers : {'Content-Type': 'application/x-www-form-urlencoded'}
 				},
+
+				register: {
+                    method: 'POST',
+                    params: {'action' : 'register'},
+                    headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+				}
 			}
 		);
 });
 
-services.factory('JournalService', function($resource) {
+services.factory('MemoService', function($resource) {
 
-	return $resource('rest/journal/:id', {id: '@id'});
+	return $resource('rest/memo/:id', {id: '@id'});
 });
-
-
-services.factory('DownloadJournalContentService', function($resource) {
-
-	return $resource('rest/file/:id/download', {id: '@id'});
-});
-
-
-services.factory('UploadJournalContentService', function($resource) {
-
-	return $resource('rest/file/:id/upload', {id: '@id'});
-});
-
-
-services.directive('fileModel', ['$parse', function ($parse) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var model = $parse(attrs.fileModel);
-            var modelSetter = model.assign;
-
-            element.bind('change', function(){
-                scope.$apply(function(){
-                    modelSetter(scope, element[0].files[0]);
-                });
-            });
-        }
-    };
-}]);
-
-services.service('fileUpload', ['$http', function ($http) {
-    this.uploadFileToUrl = function(file, uploadUrl){
-        var fd = new FormData();
-        fd.append('file', file);
-		fd.append('fileSize', file.size);
-        $http.post(uploadUrl, fd, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        })
-        .success(function(){
-				//todo print ok message
-        })
-        .error(function(){
-				//todo print error message
-        });
-    }
-}]);
 
 

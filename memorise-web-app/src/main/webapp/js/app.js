@@ -12,16 +12,6 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 				controller: EditController
 			});
 
-			$routeProvider.when('/upload/:id', {
-				templateUrl: 'partials/upload.html',
-				controller: UploadController
-			});
-
-			$routeProvider.when('/read/:id', {
-				templateUrl: 'partials/read.html',
-				controller: ReadController
-			});
-
 			$routeProvider.when('/login', {
 				templateUrl: 'partials/login.html',
 				controller: LoginController
@@ -153,7 +143,7 @@ function IndexController($rootScope, $scope, JournalService) {
 };
 
 
-function EditController($scope, $routeParams, $location, JournalService, fileUpload) {
+function EditController($scope, $routeParams, $location, JournalService) {
 
 	$scope.journalEntry = JournalService.get({id: $routeParams.id});
 
@@ -162,66 +152,7 @@ function EditController($scope, $routeParams, $location, JournalService, fileUpl
 			$location.path('/');
 		});
 	};
-
-	$scope.uploadFile = function(){
-     var file = $scope.myFile;
-     console.log('file is ' );
-     console.dir(file);
-     var uploadUrl = "/rest/file/" +  $routeParams.id + "/upload";
-     fileUpload.uploadFileToUrl(file, uploadUrl);
- };
-
 };
-
-
-function ReadController($scope, $routeParams, $location, DownloadJournalContentService, JournalService) {
-
-	$scope.journalEntry = JournalService.get({id: $routeParams.id});
-	$scope.buildPDF = function() {
-	                $http.get('/rest/' + $routeParams.id + '/download',{headers: {'AccessKeyId': 'accesskey'}, responseType: 'arraybuffer'})
-	                    .success(function (data) {
-	                        var file = new Blob([data], {type: 'application/pdf'});
-	                        var fileURL = URL.createObjectURL(file);
-	                        $window.open(fileURL);
-	                    }
-	                );
-	            };
-};
-
-var app = angular.module('ngpdfviewerApp', [ 'ngPDFViewer' ]);
-app.requires.push('ngPDFViewer');
-
-app.controller('TestCtrl', [ '$scope', 'PDFViewerService', function($scope, pdf) {
-    $scope.viewer = pdf.Instance("viewer");
-
-    $scope.nextPage = function() {
-        $scope.viewer.nextPage();
-    };
-
-    $scope.prevPage = function() {
-        $scope.viewer.prevPage();
-    };
-
-    $scope.pageLoaded = function(curPage, totalPages) {
-        $scope.currentPage = curPage;
-        $scope.totalPages = totalPages;
-    };
-}]);
-
-function UploadController($scope, $routeParams, $location, JournalService, fileUpload) {
-
-	$scope.journalEntry = JournalService.get({id: $routeParams.id});
-
-	$scope.uploadFile = function(){
-     var file = $scope.myFile;
-     console.log('file is ' );
-     console.dir(file);
-     var uploadUrl = "/rest/file/" +  $routeParams.id + "/upload";
-     fileUpload.uploadFileToUrl(file, uploadUrl);
-     $location.path('/');
- };
-};
-
 
 function CreateController($scope, $location, JournalService) {
 
@@ -274,52 +205,5 @@ services.factory('JournalService', function($resource) {
 
 	return $resource('rest/journal/:id', {id: '@id'});
 });
-
-
-services.factory('DownloadJournalContentService', function($resource) {
-
-	return $resource('rest/file/:id/download', {id: '@id'});
-});
-
-
-services.factory('UploadJournalContentService', function($resource) {
-
-	return $resource('rest/file/:id/upload', {id: '@id'});
-});
-
-
-services.directive('fileModel', ['$parse', function ($parse) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var model = $parse(attrs.fileModel);
-            var modelSetter = model.assign;
-
-            element.bind('change', function(){
-                scope.$apply(function(){
-                    modelSetter(scope, element[0].files[0]);
-                });
-            });
-        }
-    };
-}]);
-
-services.service('fileUpload', ['$http', function ($http) {
-    this.uploadFileToUrl = function(file, uploadUrl){
-        var fd = new FormData();
-        fd.append('file', file);
-		fd.append('fileSize', file.size);
-        $http.post(uploadUrl, fd, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        })
-        .success(function(){
-				//todo print ok message
-        })
-        .error(function(){
-				//todo print error message
-        });
-    }
-}]);
 
 

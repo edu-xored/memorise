@@ -1,4 +1,4 @@
-angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.services'])
+angular.module('memoriseApp', ['ngRoute', 'ngCookies', 'memoriseApp.services'])
 	.config(
 		[ '$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
 			
@@ -54,7 +54,7 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 		        		var isRestCall = config.url.indexOf('rest') == 0;
 		        		if (isRestCall && angular.isDefined($rootScope.authToken)) {
 		        			var authToken = $rootScope.authToken;
-		        			if (medicalJournalAppConfig.useAuthTokenHeader) {
+		        			if (memoriseAppConfig.useAuthTokenHeader) {
 		        				config.headers['X-Auth-Token'] = authToken;
 		        			} else {
 		        				config.url = config.url + "?token=" + authToken;
@@ -114,9 +114,9 @@ angular.module('medicalJournalApp', ['ngRoute', 'ngCookies', 'medicaljournalApp.
 		$rootScope.initialized = true;
 	});
 
-function IndexController($rootScope, $scope, JournalService) {
+function IndexController($rootScope, $scope, MemoService) {
 
-	$scope.journalEntries = JournalService.query().sort(function (a,b) {
+	$scope.memoEntries = MemoService.query().sort(function (a, b) {
         return (a.status > b.status) ? -1 : (a.status < b.status) ? 1 : 0;
     });
 
@@ -135,35 +135,35 @@ function IndexController($rootScope, $scope, JournalService) {
         return allMemos;
     };
 
-	$scope.deleteEntry = function(journalEntry) {
-		journalEntry.$remove(function() {
-			$scope.journalEntries = JournalService.query();
+	$scope.deleteEntry = function(memoEntry) {
+		memoEntry.$remove(function() {
+			$scope.memoEntries = MemoService.query();
 		});
 	};
 };
 
 
-function EditController($scope, $routeParams, $location, JournalService) {
+function EditController($scope, $routeParams, $location, MemoService) {
 
-	$scope.journalEntry = JournalService.get({id: $routeParams.id});
+	$scope.memoEntry = MemoService.get({id: $routeParams.id});
 
 	$scope.statuses = ["ARCHIVED", "ACTUAL", "CANDIDATE"];
 
 	$scope.save = function() {
-		$scope.journalEntry.$save(function() {
+		$scope.memoEntry.$save(function() {
 			$location.path('/');
 		});
 	};
 };
 
-function CreateController($scope, $location, JournalService) {
+function CreateController($scope, $location, MemoService) {
 
-	$scope.journalEntry = new JournalService();
+	$scope.memoEntry = new MemoService();
 
 	$scope.statuses = ["ARCHIVED", "ACTUAL", "CANDIDATE"];
 
 	$scope.save = function() {
-		$scope.journalEntry.$save(function() {
+		$scope.memoEntry.$save(function() {
 			$location.path('/');
 		});
 	};
@@ -190,7 +190,7 @@ function LoginController($scope, $rootScope, $location, $cookieStore, UserServic
 };
 
 
-var services = angular.module('medicaljournalApp.services', ['ngResource']);
+var services = angular.module('memoriseApp.services', ['ngResource']);
 
 services.factory('UserService', function($resource) {
 	
@@ -205,9 +205,9 @@ services.factory('UserService', function($resource) {
 		);
 });
 
-services.factory('JournalService', function($resource) {
+services.factory('MemoService', function($resource) {
 
-	return $resource('rest/journal/:id', {id: '@id'});
+	return $resource('rest/memo/:id', {id: '@id'});
 });
 
 

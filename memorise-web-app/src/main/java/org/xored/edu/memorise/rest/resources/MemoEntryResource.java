@@ -23,7 +23,7 @@ import java.util.List;
 
 
 @Component
-@Path("/journal")
+@Path("/memo")
 public class MemoEntryResource {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

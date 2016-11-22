@@ -6,13 +6,13 @@
 	   xmlns:util="http://www.springframework.org/schema/util"
 	   xmlns:tx="http://www.springframework.org/schema/tx"
 	   xmlns:security="http://www.springframework.org/schema/security"
-	   xsi:schemaLocation="
-			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	   xmlns:cache="http://www.springframework.org/schema/cache"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
 			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.2.xsd
 			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
-			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
 	<!--
 		SPRING SETUP 
@@ -144,4 +144,15 @@
 			</list>
 		</property>
 	</bean>
+
+	<!-- Switch on the Caching -->
+	<cache:annotation-driven />
+
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+		  p:cacheManager-ref="ehcache"/>
+
+	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		  p:configLocation="classpath:ehcache.xml"
+		  p:shared="true"/>
 </beans>

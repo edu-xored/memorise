@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" updateCheck="false">
+    <!--
+    | Please see http://ehcache.sourceforge.net/documentation/configuration.html for
+    | detailed information on how to configurigure caches in this file
+    +-->
+    <!-- Location of persistent caches on disk -->
+
+    <!-- Внимание! Если в кешируемом методе используются в качестве парметров storable объекты,
+         то значение парметра overflowToDisk="false" ОБЯЗАТЕЛЬНО,
+         иначе это приведет к NotSerializableException, так как стораблы не сериализуемы.
+          -->
+    <diskStore path="java.io.tmpdir/EhCacheSpringAnnotationsSmartASRApp" />
+
+    <defaultCache eternal="false" maxElementsInMemory="1000"
+                  overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+                  timeToLiveSeconds="600" memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="memos" maxElementsInMemory="500" eternal="true"
+           overflowToDisk="false" memoryStoreEvictionPolicy="LFU" />
+
+
+</ehcache>

@@ -1,9 +1,7 @@
-package org.xored.edu.memorise.impl.journal;
+package org.xored.edu.memorise.impl.memo;
 
-import org.xored.edu.memorise.api.journal.Memo;
+import org.xored.edu.memorise.api.memo.Memo;
 import org.xored.edu.memorise.core.dao.Dao;
-
-import java.io.InputStream;
 
 
 /**
@@ -11,6 +9,6 @@ import java.io.InputStream;
  * 
  * @author Daniil Efremov <daniil.efremov@gmail.com>
  */
-public interface JournalEntryDao extends Dao<Memo, Long> {
+public interface MemoEntryDao extends Dao<Memo, Long> {
 
 }

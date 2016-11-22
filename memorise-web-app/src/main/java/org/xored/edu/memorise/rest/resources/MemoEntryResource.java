@@ -1,8 +1,8 @@
 package org.xored.edu.memorise.rest.resources;
 
 import org.xored.edu.memorise.JsonViews;
-import org.xored.edu.memorise.api.journal.Memo;
-import org.xored.edu.memorise.impl.journal.JournalEntryDao;
+import org.xored.edu.memorise.api.memo.Memo;
+import org.xored.edu.memorise.impl.memo.MemoEntryDao;
 import org.xored.edu.memorise.api.user.Role;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -24,12 +24,12 @@ import java.util.List;
 
 @Component
 @Path("/journal")
-public class JournalEntryResource {
+public class MemoEntryResource {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	private JournalEntryDao journalEntryDao;
+	private MemoEntryDao memoEntryDao;
 
 	@Autowired
 	private ObjectMapper mapper;
@@ -45,7 +45,7 @@ public class JournalEntryResource {
 		} else {
 			viewWriter = this.mapper.writerWithView(JsonViews.User.class);
 		}
-		List<Memo> allEntries = this.journalEntryDao.findAll();
+		List<Memo> allEntries = this.memoEntryDao.findAll();
 
 		return viewWriter.writeValueAsString(allEntries);
 	}
@@ -56,7 +56,7 @@ public class JournalEntryResource {
 	public Memo read(@PathParam("id") Long id) {
 		this.logger.info("read(id)");
 
-		Memo journalsEntry = this.journalEntryDao.find(id);
+		Memo journalsEntry = this.memoEntryDao.find(id);
 		if (journalsEntry == null) {
 			throw new WebApplicationException(404);
 		}
@@ -69,7 +69,7 @@ public class JournalEntryResource {
 	public Memo create(Memo journalsEntry) {
 		this.logger.info("create(): " + journalsEntry);
 
-		return this.journalEntryDao.save(journalsEntry);
+		return this.memoEntryDao.save(journalsEntry);
 	}
 
 	@POST
@@ -79,7 +79,7 @@ public class JournalEntryResource {
 	public Memo update(@PathParam("id") Long id, Memo journalsEntry) {
 		this.logger.info("update(): " + journalsEntry);
 
-		return this.journalEntryDao.save(journalsEntry);
+		return this.memoEntryDao.save(journalsEntry);
 	}
 
 	@DELETE
@@ -88,7 +88,7 @@ public class JournalEntryResource {
 	public void delete(@PathParam("id") Long id) {
 		this.logger.info("delete(id)");
 
-		this.journalEntryDao.delete(id);
+		this.memoEntryDao.delete(id);
 	}
 
 	private boolean isPublisher() {

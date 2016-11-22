@@ -1,4 +1,4 @@
-package org.xored.edu.memorise.api.journal;
+package org.xored.edu.memorise.api.memo;
 
 /**
  * Created by Anatoly on 17.11.2016.

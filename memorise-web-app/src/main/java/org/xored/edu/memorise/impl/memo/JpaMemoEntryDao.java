@@ -1,28 +1,23 @@
-package org.xored.edu.memorise.impl.journal;
+package org.xored.edu.memorise.impl.memo;
 
-import org.xored.edu.memorise.api.journal.Memo;
+import org.xored.edu.memorise.api.memo.Memo;
 import org.xored.edu.memorise.core.dao.JpaDao;
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.io.*;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
- * JPA Implementation of a {@link JournalEntryDao}.
+ * JPA Implementation of a {@link MemoEntryDao}.
  *
  * @author Daniil Efremov <daniil.efremov@gmail.com>
  */
-class JpaJournalEntryDao extends JpaDao<Memo, Long> implements JournalEntryDao {
+class JpaMemoEntryDao extends JpaDao<Memo, Long> implements MemoEntryDao {
 
-	public JpaJournalEntryDao() {
+	public JpaMemoEntryDao() {
 		super(Memo.class);
 	}
 

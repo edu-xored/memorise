@@ -1,9 +1,5 @@
 package org.xored.edu.memorise.rest.resources;
 
-import org.xored.edu.memorise.JsonViews;
-import org.xored.edu.memorise.api.memo.Memo;
-import org.xored.edu.memorise.impl.memo.MemoEntryDao;
-import org.xored.edu.memorise.api.user.Role;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -11,10 +7,16 @@ import org.codehaus.jackson.map.ObjectWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.xored.edu.memorise.JsonViews;
+import org.xored.edu.memorise.api.memo.Memo;
+import org.xored.edu.memorise.api.user.Role;
+import org.xored.edu.memorise.impl.memo.MemoEntryDao;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -34,6 +36,7 @@ public class MemoEntryResource {
 	@Autowired
 	private ObjectMapper mapper;
 
+	@Cacheable("memos")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String list() throws JsonGenerationException, JsonMappingException, IOException {
@@ -63,6 +66,7 @@ public class MemoEntryResource {
 		return journalsEntry;
 	}
 
+	@CacheEvict(cacheNames="memos", allEntries=true)
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -72,6 +76,7 @@ public class MemoEntryResource {
 		return this.memoEntryDao.save(journalsEntry);
 	}
 
+	@CacheEvict(cacheNames="memos", allEntries=true)
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -82,6 +87,7 @@ public class MemoEntryResource {
 		return this.memoEntryDao.save(journalsEntry);
 	}
 
+	@CacheEvict(cacheNames="memos", allEntries=true)
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")

@@ -112,8 +112,13 @@ angular.module('memoriseApp', ['ngRoute', 'ngCookies', 'memoriseApp.services'])
 			$location.path("/login");
 		};
 
+		$rootScope.crawlBtnIsDisabled = false;
 		$rootScope.Crawler = function() {
+			$rootScope.crawlBtnIsDisabled = true;
 		    $http.post('/rest/crawler/run')
+		    	.then(function() {
+		    		$rootScope.crawlBtnIsDisabled = false;
+		    	})
 		        .then(function success(response) {
 		            alert('Crawler start successfully');
 		        }, function error(response) {

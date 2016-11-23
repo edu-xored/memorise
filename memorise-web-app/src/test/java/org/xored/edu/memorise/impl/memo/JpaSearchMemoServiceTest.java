@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  * Created by Anatoly on 22.11.2016.
  */
 @RunWith(value = SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/context.xml")
+@ContextConfiguration(locations = "/context.xml")
 public class JpaSearchMemoServiceTest {
     @Autowired
     DataBaseInitializer dataBaseInitializer;

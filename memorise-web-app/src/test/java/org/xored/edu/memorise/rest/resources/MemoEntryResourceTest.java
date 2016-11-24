@@ -3,18 +3,20 @@ package org.xored.edu.memorise.rest.resources;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.xored.edu.memorise.api.memo.Memo;
+import org.xored.edu.memorise.impl.memo.MemoEntryDao;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
  * Created by Anatoly on 23.11.2016.
@@ -25,11 +27,14 @@ public class MemoEntryResourceTest {
 
     @Autowired
     private MemoEntryResource memoEntryResource;
-    MemoEntryResource spy;
+
+    @Mock
+    MemoEntryDao spy;
 
     @Before
     public void setUp() {
-        spy = spy(memoEntryResource);
+        initMocks(this);
+        memoEntryResource.setMemoEntryDao(spy);
         Authentication authentication = Mockito.mock(Authentication.class);
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
@@ -39,44 +44,42 @@ public class MemoEntryResourceTest {
 
     @Test
     public void list() throws Exception {
-        //doReturn("first").doReturn("second").when(spy).list();
-        /*doAnswer(new Answer<String>() {
-            @Override
-            public String answer(InvocationOnMock invocation) throws Throwable {
-                return "123";
-            }
-        }).when(spy).list();*/
-
-        String first = spy.list();
-        String second = spy.list();
-
-        //test can be passed for any value of n in times(n)
-        verify(spy, times(1)).list();
-        //verify(spy, times(2)).list();
-        //verify(spy, times(1000)).list();
-        //verify(spy, never()).list();
-
-        assertEquals(first, second);
+        //create entity to evict cache
+        memoEntryResource.create(new Memo());
+        for (int i = 0; i < 100; i++) {
+            memoEntryResource.list();
+        }
+        verify(spy, times(1)).findAll();
     }
 
     @Test
     public void read() throws Exception {
+        memoEntryResource.create(new Memo());
+        memoEntryResource.list();
+        memoEntryResource.create(new Memo());
+        memoEntryResource.list();
 
-    }
-
-    @Test
-    public void create() throws Exception {
-
+        verify(spy, times(2)).findAll();
     }
 
     @Test
     public void update() throws Exception {
+        memoEntryResource.update(1L, new Memo());
+        memoEntryResource.list();
+        memoEntryResource.update(1L, new Memo());
+        memoEntryResource.list();
 
+        verify(spy, times(2)).findAll();
     }
 
     @Test
     public void delete() throws Exception {
+        memoEntryResource.delete(1L);
+        memoEntryResource.list();
+        memoEntryResource.delete(2L);
+        memoEntryResource.list();
 
+        verify(spy, times(2)).findAll();
     }
 
 }

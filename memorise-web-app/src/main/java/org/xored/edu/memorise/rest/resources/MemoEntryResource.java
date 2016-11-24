@@ -34,12 +34,6 @@ public class MemoEntryResource {
 
 	private ObjectMapper mapper;
 
-	@Autowired
-	public MemoEntryResource(MemoEntryDao memoEntryDao, ObjectMapper mapper) {
-		this.memoEntryDao = memoEntryDao;
-		this.mapper = mapper;
-	}
-
 	@Cacheable("memos")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -110,5 +104,15 @@ public class MemoEntryResource {
 		UserDetails userDetails = (UserDetails) principal;
 
 		return userDetails.getAuthorities().contains(Role.PUBLISHER);
+	}
+
+	@Autowired
+	public void setMapper(ObjectMapper mapper) {
+		this.mapper = mapper;
+	}
+
+	@Autowired
+	public void setMemoEntryDao(MemoEntryDao memoEntryDao) {
+		this.memoEntryDao = memoEntryDao;
 	}
 }

@@ -55,6 +55,7 @@ public class DataBaseInitializer {
 			memo.setDescription("This is Memo detailed info " + i);
 			memo.setDate(new Date(timestamp));
 			memo.setStatus(MemoStatus.ACTUAL);
+			memo.setCounter(10L);
 			this.memoEntryDao.save(memo);
 			timestamp += 1000 * 60 * 60;
 		}
@@ -65,6 +66,7 @@ public class DataBaseInitializer {
 			memo.setDescription("This is Memo detailed info " + (i + 5));
 			memo.setDate(new Date(timestamp));
 			memo.setStatus(MemoStatus.ARCHIVED);
+			memo.setCounter(1L);
 			this.memoEntryDao.save(memo);
 			timestamp += 1000 * 60 * 60;
 		}
@@ -75,6 +77,7 @@ public class DataBaseInitializer {
 			memo.setDescription("This is Memo detailed info " + (i + 10));
 			memo.setDate(new Date(timestamp));
 			memo.setStatus(MemoStatus.CANDIDATE);
+			memo.setCounter(5L);
 			this.memoEntryDao.save(memo);
 			timestamp += 1000 * 60 * 60;
 		}

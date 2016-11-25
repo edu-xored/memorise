@@ -64,6 +64,12 @@
 	<bean id="searchMemoService" class="org.xored.edu.memorise.impl.memo.JpaSearchMemoService">
 	</bean>
 
+	<bean id="memoMatching" class="org.xored.edu.memorise.crawler.impl.DummyMemoMatchingImpl">
+	</bean>
+
+	<bean id="memoParser" class="org.xored.edu.memorise.crawler.impl.SimpleMemoParserImpl">
+	</bean>
+
 	<bean id="userDao" class="org.xored.edu.memorise.impl.user.JpaUserDao">
 	</bean>
 

@@ -1,7 +1,8 @@
 package org.xored.edu.memorise.crawler;
 
-import org.xored.edu.memorise.crawler.api.MatchingMemeCandidate;
-import org.xored.edu.memorise.crawler.api.MemeParser;
+import org.xored.edu.memorise.api.memo.Memo;
+import org.xored.edu.memorise.crawler.api.MemoMatching;
+import org.xored.edu.memorise.crawler.api.MemoParser;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
@@ -13,16 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author defremov
  */
 public class CrawlerRunner {
-    private MatchingMemeCandidate matchingMemeCandidate;
-    private MemeParser memeParser;
+    private MemoMatching memoMatching;
+    private MemoParser memoParser;
 
     @Autowired
-    public CrawlerRunner(MatchingMemeCandidate matchingMemeCandidate, MemeParser memeParser) {
-        this.matchingMemeCandidate = matchingMemeCandidate;
-        this.memeParser = memeParser;
+    public CrawlerRunner(MemoMatching memoMatching, MemoParser memoParser) {
+        this.memoMatching = memoMatching;
+        this.memoParser = memoParser;
     }
 
-    public void run(final CrawlerSettings crawlerSettings, final MemeCandidate memeCandidate) throws Exception {
+    public void run(final CrawlerSettings crawlerSettings, final Memo memo) throws Exception {
         CrawlConfig config = crawlerSettings.getCrawlConfig();
 
         PageFetcher pageFetcher = new PageFetcher(config);
@@ -34,7 +35,7 @@ public class CrawlerRunner {
             controller.addSeed(seed);
         }
 
-        ActionsCrawler.configure(memeParser, matchingMemeCandidate, memeCandidate);
+        ActionsCrawler.configure(memoParser, memoMatching, memo);
         controller.start(ActionsCrawler.class, crawlerSettings.getNumberOfCrawlers());
     }
 }

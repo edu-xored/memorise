@@ -1,12 +1,13 @@
 package org.xored.edu.memorise.crawler;
 
 
-import org.xored.edu.memorise.crawler.api.MatchingMemeCandidate;
-import org.xored.edu.memorise.crawler.api.MemeParser;
+import org.xored.edu.memorise.crawler.api.MemoMatching;
+import org.xored.edu.memorise.crawler.api.MemoParser;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import org.xored.edu.memorise.api.memo.Memo;
 
 import java.util.regex.Pattern;
 
@@ -18,22 +19,22 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class ActionsCrawler extends WebCrawler {
-    private static MemeParser memeParser;
-    private static MemeCandidate memeCandidate;
-    private static MatchingMemeCandidate matchingMemeCandidate;
+    private static MemoParser memoParser;
+    private static Memo memo;
+    private static MemoMatching memoMatching;
     private static final Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
             + "|png|tiff?|mid|mp2|mp3|mp4"
             + "|wav|avi|mov|mpeg|ram|m4v|pdf"
             + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
 
-    static void configure(MemeParser parser, MatchingMemeCandidate matching, MemeCandidate candidate) {
-        memeParser = parser;
-        matchingMemeCandidate = matching;
-        memeCandidate = candidate;
+    static void configure(MemoParser parser, MemoMatching matching, Memo candidate) {
+        memoParser = parser;
+        memoMatching = matching;
+        memo = candidate;
     }
 
     @Override
-    public boolean shouldVisit(WebURL url) {
+    public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
         return !FILTERS.matcher(href).matches();
     }
@@ -43,18 +44,13 @@ public class ActionsCrawler extends WebCrawler {
         logger.info("URL: " + page.getWebURL().getURL());
         if (page.getParseData() instanceof HtmlParseData) {
             String text = getPageText(page);
-            MemeInfo info = parseMemeCandidate(text);
-            logger.info("Meme info counter = " + info.getCounter());
-            matchingMemeCandidate.match(memeCandidate, info);
+            memoParser.parse(text, memo);
+            logger.info("Meme info counter = " + memo.getCounter());
+            memoMatching.match(memo);
         }
     }
 
     private String getPageText(Page page) {
         return ((HtmlParseData) page.getParseData()).getText();
     }
-
-    private MemeInfo parseMemeCandidate(String text) {
-        return memeParser.parse(text, memeCandidate);
-    }
-
 }

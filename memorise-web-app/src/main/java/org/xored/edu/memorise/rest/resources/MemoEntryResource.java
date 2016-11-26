@@ -30,10 +30,8 @@ public class MemoEntryResource {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
 	private MemoEntryDao memoEntryDao;
 
-	@Autowired
 	private ObjectMapper mapper;
 
 	@Cacheable("memos")
@@ -108,4 +106,13 @@ public class MemoEntryResource {
 		return userDetails.getAuthorities().contains(Role.PUBLISHER);
 	}
 
+	@Autowired
+	public void setMapper(ObjectMapper mapper) {
+		this.mapper = mapper;
+	}
+
+	@Autowired
+	public void setMemoEntryDao(MemoEntryDao memoEntryDao) {
+		this.memoEntryDao = memoEntryDao;
+	}
 }

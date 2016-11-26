@@ -61,6 +61,9 @@
 	<bean id="memoEntryDao" class="org.xored.edu.memorise.impl.memo.JpaMemoEntryDao">
 	</bean>
 
+	<bean id="searchMemoService" class="org.xored.edu.memorise.impl.memo.JpaSearchMemoService">
+	</bean>
+
 	<bean id="userDao" class="org.xored.edu.memorise.impl.user.JpaUserDao">
 	</bean>
 
@@ -97,7 +100,6 @@
 		<security:csrf disabled="true"/>
 		<security:custom-filter ref="authenticationTokenProcessingFilter" position="PRE_AUTH_FILTER" />
 		<security:intercept-url pattern="/rest/user/authenticate" access="permitAll" />
-		<security:intercept-url method="GET" pattern="/rest/memo/**" access="hasRole('USER')" />
 		<security:intercept-url method="PUT" pattern="/rest/memo/**" access="hasRole('PUBLISHER')" />
 		<security:intercept-url method="POST" pattern="/rest/memo/**" access="hasRole('PUBLISHER')" />
 		<security:intercept-url method="DELETE" pattern="/rest/memo/**" access="hasRole('PUBLISHER')" />

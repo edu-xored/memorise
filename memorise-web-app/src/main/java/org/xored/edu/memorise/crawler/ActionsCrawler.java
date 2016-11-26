@@ -1,15 +1,13 @@
 package org.xored.edu.memorise.crawler;
 
 
-import org.xored.edu.memorise.api.memo.services.BasicMemoService;
-import org.xored.edu.memorise.api.memo.services.SearchMemoService;
-import org.xored.edu.memorise.crawler.api.MemoMatching;
-import org.xored.edu.memorise.crawler.api.MemoParser;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import org.xored.edu.memorise.api.memo.Memo;
+import org.xored.edu.memorise.crawler.api.MemoMatching;
+import org.xored.edu.memorise.crawler.api.MemoEntryFinder;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -22,25 +20,22 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class ActionsCrawler extends WebCrawler {
-    private static MemoParser memoParser;
+    private static MemoEntryFinder memoEntryFinder;
     private static Memo memo;
     private static MemoMatching memoMatching;
-    private static BasicMemoService basicMemoService;
-    private static SearchMemoService searchMemoService;
+    private static CrawlerServicesContext servicesContext;
     private static final Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
             + "|png|tiff?|mid|mp2|mp3|mp4"
             + "|wav|avi|mov|mpeg|ram|m4v|pdf"
             + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
 
-    static void configure(MemoParser memoParser,
+    static void configure(MemoEntryFinder memoEntryFinder,
                           MemoMatching memoMatching,
-                          BasicMemoService basicMemoService,
-                          SearchMemoService searchMemoService,
+                          CrawlerServicesContext servicesContext,
                           Memo memo) {
-        ActionsCrawler.memoParser = memoParser;
+        ActionsCrawler.memoEntryFinder = memoEntryFinder;
         ActionsCrawler.memoMatching = memoMatching;
-        ActionsCrawler.basicMemoService = basicMemoService;
-        ActionsCrawler.searchMemoService = searchMemoService;
+        ActionsCrawler.servicesContext = servicesContext;
         ActionsCrawler.memo = memo;
     }
 
@@ -56,15 +51,15 @@ public class ActionsCrawler extends WebCrawler {
         if (page.getParseData() instanceof HtmlParseData) {
             String text = getPageText(page);
             memo = tryFindMemo();
-            memoParser.parse(text, memo);
+            memoEntryFinder.findEntries(text, memo);
             logger.info("Meme info counter = " + memo.getCounter());
             memoMatching.match(memo);
-            basicMemoService.saveMemo(memo);
+            servicesContext.getBasicMemoService().saveMemo(memo);
         }
     }
 
     private Memo tryFindMemo() {
-        List memosByTitle = searchMemoService.findMemosByTitle(memo.getTitle());
+        List memosByTitle = servicesContext.getSearchMemoService().findMemosByTitle(memo.getTitle());
         return !memosByTitle.isEmpty() ? (Memo) memosByTitle.get(0) : memo;
     }
 

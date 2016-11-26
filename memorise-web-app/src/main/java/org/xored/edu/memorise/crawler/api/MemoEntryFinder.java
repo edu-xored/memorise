@@ -5,6 +5,6 @@ import org.xored.edu.memorise.api.memo.Memo;
 /**
  * Created by Anatoly on 26.10.2016.
  */
-public interface MemoParser {
-    void parse(String text, Memo candidate);
+public interface MemoEntryFinder {
+    void findEntries(String text, Memo candidate);
 }

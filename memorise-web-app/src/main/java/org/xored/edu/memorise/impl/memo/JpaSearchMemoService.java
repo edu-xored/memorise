@@ -18,7 +18,7 @@ public class JpaSearchMemoService extends JpaDao<Memo, Long> implements SearchMe
 
     @Override
     @Transactional
-    public List findMemosByTitle(String title) {
+    public List<Memo> findMemosByTitle(String title) {
         return this.getEntityManager().createQuery("select m from Memo m where m.title = :title")
                 .setParameter("title", title)
                 .getResultList();
@@ -26,7 +26,7 @@ public class JpaSearchMemoService extends JpaDao<Memo, Long> implements SearchMe
 
     @Override
     @Transactional
-    public List findMemosByDescription(String description) {
+    public List<Memo> findMemosByDescription(String description) {
         return this.getEntityManager().createQuery("select m from Memo m where m.description = :description")
                 .setParameter("description", description)
                 .getResultList();
@@ -34,7 +34,7 @@ public class JpaSearchMemoService extends JpaDao<Memo, Long> implements SearchMe
 
     @Override
     @Transactional
-    public List findMemosContainsTextInTitle(String titleText) {
+    public List<Memo> findMemosContainsTextInTitle(String titleText) {
         return this.getEntityManager().createQuery("select m from Memo m where m.title like :titleText")
                 .setParameter("titleText", "%" + titleText + "%")
                 .getResultList();
@@ -42,7 +42,7 @@ public class JpaSearchMemoService extends JpaDao<Memo, Long> implements SearchMe
 
     @Override
     @Transactional
-    public List findMemosContainsTextInDescription(String descriptionText) {
+    public List<Memo> findMemosContainsTextInDescription(String descriptionText) {
         return this.getEntityManager().createQuery("select m from Memo m where m.title like :descriptionText")
                 .setParameter("descriptionText", "%" + descriptionText + "%")
                 .getResultList();

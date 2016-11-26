@@ -13,6 +13,7 @@ import org.xored.edu.memorise.api.memo.MemoStatus;
 import org.xored.edu.memorise.api.memo.services.SearchMemoService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Anatoly on 28.10.2016.

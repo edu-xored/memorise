@@ -5,29 +5,24 @@ import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
-import org.xored.edu.memorise.api.memo.services.BasicMemoService;
 import org.xored.edu.memorise.api.memo.Memo;
-import org.xored.edu.memorise.api.memo.services.SearchMemoService;
+import org.xored.edu.memorise.crawler.api.MemoEntryFinder;
 import org.xored.edu.memorise.crawler.api.MemoMatching;
-import org.xored.edu.memorise.crawler.api.MemoParser;
 
 /**
  * @author defremov
  */
 public class CrawlerRunner {
     private MemoMatching memoMatching;
-    private MemoParser memoParser;
-    private BasicMemoService basicMemoService;
-    private SearchMemoService searchMemoService;
+    private MemoEntryFinder memoEntryFinder;
+    private CrawlerServicesContext servicesContext;
 
-    public CrawlerRunner(MemoParser memoParser,
+    public CrawlerRunner(MemoEntryFinder memoEntryFinder,
                          MemoMatching memoMatching,
-                         BasicMemoService basicMemoService,
-                         SearchMemoService searchMemoService) {
+                         CrawlerServicesContext servicesContext) {
         this.memoMatching = memoMatching;
-        this.memoParser = memoParser;
-        this.basicMemoService = basicMemoService;
-        this.searchMemoService = searchMemoService;
+        this.memoEntryFinder = memoEntryFinder;
+        this.servicesContext = servicesContext;
     }
 
     void run(final CrawlerSettings crawlerSettings, final Memo memo) throws Exception {
@@ -42,7 +37,7 @@ public class CrawlerRunner {
             controller.addSeed(seed);
         }
 
-        ActionsCrawler.configure(memoParser, memoMatching, basicMemoService, searchMemoService, memo);
+        ActionsCrawler.configure(memoEntryFinder, memoMatching, servicesContext, memo);
         controller.start(ActionsCrawler.class, crawlerSettings.getNumberOfCrawlers());
     }
 }

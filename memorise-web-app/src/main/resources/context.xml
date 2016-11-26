@@ -66,14 +66,18 @@
 	<bean id="memoMatching" class="org.xored.edu.memorise.crawler.impl.DummyMemoMatchingImpl">
 	</bean>
 
-	<bean id="memoParser" class="org.xored.edu.memorise.crawler.impl.SimpleMemoParserImpl">
+	<bean id="memoEntryFinder" class="org.xored.edu.memorise.crawler.impl.SimpleMemoEntryFinderImpl">
+	</bean>
+
+	<bean id="crawlerServicesContext" class="org.xored.edu.memorise.crawler.CrawlerServicesContext">
+		<constructor-arg ref="basicMemoService"/>
+		<constructor-arg ref="searchMemoService"/>
 	</bean>
 
 	<bean id="crawlerRunner" class="org.xored.edu.memorise.crawler.CrawlerRunner">
-		<constructor-arg ref="memoParser"/>
+		<constructor-arg ref="memoEntryFinder"/>
 		<constructor-arg ref="memoMatching"/>
-		<constructor-arg ref="basicMemoService"/>
-		<constructor-arg ref="searchMemoService"/>
+		<constructor-arg ref="crawlerServicesContext"/>
 	</bean>
 
 	<bean id="userDao" class="org.xored.edu.memorise.impl.user.JpaUserDao">

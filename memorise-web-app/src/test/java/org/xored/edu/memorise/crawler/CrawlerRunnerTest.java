@@ -8,18 +8,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.xored.edu.memorise.api.memo.BasicMemoService;
 import org.xored.edu.memorise.api.memo.Memo;
 import org.xored.edu.memorise.api.memo.MemoStatus;
-import org.xored.edu.memorise.api.memo.SearchMemoService;
-import org.xored.edu.memorise.impl.memo.JpaBasicMemoService;
-import org.xored.edu.memorise.impl.memo.JpaService;
+import org.xored.edu.memorise.api.memo.services.SearchMemoService;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
 
 /**
  * Created by Anatoly on 28.10.2016.
@@ -35,7 +28,6 @@ public class CrawlerRunnerTest {
     private SearchMemoService searchMemoService;
     @Before
     public void setUp() throws Exception {
-        //memoService = new JpaBasicMemoService();
         ArrayList<String> seeds = new ArrayList<String>();
         seeds.add("http://www.eurosport.ru/football/champions-league/2016-2017/story_sto5959402.shtml");
         CrawlConfig crawlConfig = setCrawlConfig();
@@ -54,12 +46,11 @@ public class CrawlerRunnerTest {
 
     @Test
     public void run() throws Exception {
-        List memosByTitle = searchMemoService.findMemosByTitle("Ростов");
         crawlerRunner.run(crawlerSettings, memo);
 
-        List memosByTitle1 = searchMemoService.findMemosByTitle("Ростов");
         Assert.assertTrue(memo.getCounter() > 10L);
         Assert.assertEquals(MemoStatus.ACTUAL, memo.getStatus());
+        Assert.assertTrue(!searchMemoService.findMemosByTitle("Ростов").isEmpty());
     }
 
     @Test

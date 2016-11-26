@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.xored.edu.memorise.api.memo.Memo;
-import org.xored.edu.memorise.impl.memo.MemoEntryDao;
+import org.xored.edu.memorise.api.memo.services.MemoEntryDao;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

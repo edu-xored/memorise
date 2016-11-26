@@ -1,7 +1,7 @@
 package org.xored.edu.memorise.impl;
 
 import org.xored.edu.memorise.api.memo.MemoStatus;
-import org.xored.edu.memorise.impl.memo.MemoEntryDao;
+import org.xored.edu.memorise.api.memo.services.MemoEntryDao;
 import org.xored.edu.memorise.impl.user.UserDao;
 import org.xored.edu.memorise.api.memo.Memo;
 import org.xored.edu.memorise.api.user.Role;

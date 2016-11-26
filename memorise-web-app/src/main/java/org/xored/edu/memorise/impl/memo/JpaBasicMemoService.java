@@ -1,14 +1,12 @@
 package org.xored.edu.memorise.impl.memo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.xored.edu.memorise.api.memo.Memo;
-import org.xored.edu.memorise.api.memo.BasicMemoService;
-import org.xored.edu.memorise.api.memo.SearchMemoService;
+import org.xored.edu.memorise.api.memo.services.BasicMemoService;
+import org.xored.edu.memorise.api.memo.services.SearchMemoService;
 import org.xored.edu.memorise.core.dao.JpaDao;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 /**

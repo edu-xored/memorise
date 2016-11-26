@@ -1,4 +1,4 @@
-package org.xored.edu.memorise.api.memo;
+package org.xored.edu.memorise.api.memo.services;
 
 import java.util.List;
 

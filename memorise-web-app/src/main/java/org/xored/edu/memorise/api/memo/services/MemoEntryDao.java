@@ -1,4 +1,4 @@
-package org.xored.edu.memorise.impl.memo;
+package org.xored.edu.memorise.api.memo.services;
 
 import org.xored.edu.memorise.api.memo.Memo;
 import org.xored.edu.memorise.core.dao.Dao;

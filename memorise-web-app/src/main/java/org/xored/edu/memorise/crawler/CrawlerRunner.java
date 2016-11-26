@@ -5,9 +5,9 @@ import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
-import org.xored.edu.memorise.api.memo.BasicMemoService;
+import org.xored.edu.memorise.api.memo.services.BasicMemoService;
 import org.xored.edu.memorise.api.memo.Memo;
-import org.xored.edu.memorise.api.memo.SearchMemoService;
+import org.xored.edu.memorise.api.memo.services.SearchMemoService;
 import org.xored.edu.memorise.crawler.api.MemoMatching;
 import org.xored.edu.memorise.crawler.api.MemoParser;
 

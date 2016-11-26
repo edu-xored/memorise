@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.xored.edu.memorise.JsonViews;
 import org.xored.edu.memorise.api.memo.Memo;
 import org.xored.edu.memorise.api.user.Role;
-import org.xored.edu.memorise.impl.memo.MemoEntryDao;
+import org.xored.edu.memorise.api.memo.services.MemoEntryDao;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

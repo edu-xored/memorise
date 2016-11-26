@@ -1,8 +1,8 @@
 package org.xored.edu.memorise.crawler;
 
 
-import org.xored.edu.memorise.api.memo.BasicMemoService;
-import org.xored.edu.memorise.api.memo.SearchMemoService;
+import org.xored.edu.memorise.api.memo.services.BasicMemoService;
+import org.xored.edu.memorise.api.memo.services.SearchMemoService;
 import org.xored.edu.memorise.crawler.api.MemoMatching;
 import org.xored.edu.memorise.crawler.api.MemoParser;
 import edu.uci.ics.crawler4j.crawler.Page;

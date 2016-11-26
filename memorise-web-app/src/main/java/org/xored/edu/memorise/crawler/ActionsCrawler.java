@@ -1,6 +1,8 @@
 package org.xored.edu.memorise.crawler;
 
 
+import org.xored.edu.memorise.api.memo.BasicMemoService;
+import org.xored.edu.memorise.api.memo.SearchMemoService;
 import org.xored.edu.memorise.crawler.api.MemoMatching;
 import org.xored.edu.memorise.crawler.api.MemoParser;
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -9,6 +11,7 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import org.xored.edu.memorise.api.memo.Memo;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -22,15 +25,23 @@ public class ActionsCrawler extends WebCrawler {
     private static MemoParser memoParser;
     private static Memo memo;
     private static MemoMatching memoMatching;
+    private static BasicMemoService basicMemoService;
+    private static SearchMemoService searchMemoService;
     private static final Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
             + "|png|tiff?|mid|mp2|mp3|mp4"
             + "|wav|avi|mov|mpeg|ram|m4v|pdf"
             + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
 
-    static void configure(MemoParser parser, MemoMatching matching, Memo candidate) {
-        memoParser = parser;
-        memoMatching = matching;
-        memo = candidate;
+    static void configure(MemoParser memoParser,
+                          MemoMatching memoMatching,
+                          BasicMemoService basicMemoService,
+                          SearchMemoService searchMemoService,
+                          Memo memo) {
+        ActionsCrawler.memoParser = memoParser;
+        ActionsCrawler.memoMatching = memoMatching;
+        ActionsCrawler.basicMemoService = basicMemoService;
+        ActionsCrawler.searchMemoService = searchMemoService;
+        ActionsCrawler.memo = memo;
     }
 
     @Override
@@ -44,10 +55,17 @@ public class ActionsCrawler extends WebCrawler {
         logger.info("URL: " + page.getWebURL().getURL());
         if (page.getParseData() instanceof HtmlParseData) {
             String text = getPageText(page);
+            memo = tryFindMemo();
             memoParser.parse(text, memo);
             logger.info("Meme info counter = " + memo.getCounter());
             memoMatching.match(memo);
+            basicMemoService.saveMemo(memo);
         }
+    }
+
+    private Memo tryFindMemo() {
+        List memosByTitle = searchMemoService.findMemosByTitle(memo.getTitle());
+        return !memosByTitle.isEmpty() ? (Memo) memosByTitle.get(0) : memo;
     }
 
     private String getPageText(Page page) {

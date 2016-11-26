@@ -64,10 +64,20 @@
 	<bean id="searchMemoService" class="org.xored.edu.memorise.impl.memo.JpaSearchMemoService">
 	</bean>
 
+	<bean id="basicMemoService" class="org.xored.edu.memorise.impl.memo.JpaBasicMemoService">
+	</bean>
+
 	<bean id="memoMatching" class="org.xored.edu.memorise.crawler.impl.DummyMemoMatchingImpl">
 	</bean>
 
 	<bean id="memoParser" class="org.xored.edu.memorise.crawler.impl.SimpleMemoParserImpl">
+	</bean>
+
+	<bean id="crawlerRunner" class="org.xored.edu.memorise.crawler.CrawlerRunner">
+		<constructor-arg ref="memoParser"/>
+		<constructor-arg ref="memoMatching"/>
+		<constructor-arg ref="basicMemoService"/>
+		<constructor-arg ref="searchMemoService"/>
 	</bean>
 
 	<bean id="userDao" class="org.xored.edu.memorise.impl.user.JpaUserDao">

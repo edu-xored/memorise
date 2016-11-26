@@ -29,12 +29,12 @@ public class MemoEntryResourceTest {
     private MemoEntryResource memoEntryResource;
 
     @Mock
-    MemoEntryDao spy;
+    MemoEntryDao mockMemoEntryDao;
 
     @Before
     public void setUp() {
         initMocks(this);
-        memoEntryResource.setMemoEntryDao(spy);
+        memoEntryResource.setMemoEntryDao(mockMemoEntryDao);
         Authentication authentication = Mockito.mock(Authentication.class);
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
@@ -43,43 +43,43 @@ public class MemoEntryResourceTest {
     }
 
     @Test
-    public void list() throws Exception {
+    public void checkCacheCallsForMultipleListRequests() throws Exception {
         //create entity to evict cache
         memoEntryResource.create(new Memo());
         for (int i = 0; i < 100; i++) {
             memoEntryResource.list();
         }
-        verify(spy, times(1)).findAll();
+        verify(mockMemoEntryDao, times(1)).findAll();
     }
 
     @Test
-    public void read() throws Exception {
+    public void checkCacheEvictionByCreateCall() throws Exception {
         memoEntryResource.create(new Memo());
         memoEntryResource.list();
         memoEntryResource.create(new Memo());
         memoEntryResource.list();
 
-        verify(spy, times(2)).findAll();
+        verify(mockMemoEntryDao, times(2)).findAll();
     }
 
     @Test
-    public void update() throws Exception {
+    public void checkCacheEvictionByUpdateCall() throws Exception {
         memoEntryResource.update(1L, new Memo());
         memoEntryResource.list();
         memoEntryResource.update(1L, new Memo());
         memoEntryResource.list();
 
-        verify(spy, times(2)).findAll();
+        verify(mockMemoEntryDao, times(2)).findAll();
     }
 
     @Test
-    public void delete() throws Exception {
+    public void checkCacheEvictionByDeleteCall() throws Exception {
         memoEntryResource.delete(1L);
         memoEntryResource.list();
         memoEntryResource.delete(2L);
         memoEntryResource.list();
 
-        verify(spy, times(2)).findAll();
+        verify(mockMemoEntryDao, times(2)).findAll();
     }
 
 }

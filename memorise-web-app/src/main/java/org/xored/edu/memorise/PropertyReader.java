@@ -30,10 +30,10 @@ public class PropertyReader {
 
 	@PostConstruct
 	public void setupQuartz() {
-		System.out.println(quartzTriggerTime);
+		logger.info("resetup quartz trigger with cron expression: " + quartzTriggerTime);
 
-		TriggerBuilder<CronTrigger> tb = oldTrigger.getObject().getTriggerBuilder();
-		Trigger newTrigger = tb.withSchedule(CronScheduleBuilder.cronSchedule(quartzTriggerTime)).build();
+		TriggerBuilder<CronTrigger> triggerBuilder = oldTrigger.getObject().getTriggerBuilder();
+		Trigger newTrigger = triggerBuilder.withSchedule(CronScheduleBuilder.cronSchedule(quartzTriggerTime)).build();
 
 		try {
 			scheduler.getObject().rescheduleJob(oldTrigger.getObject().getKey(), newTrigger);

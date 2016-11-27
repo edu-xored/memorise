@@ -29,6 +29,10 @@
 
 	<!-- Search for Rest Resources and configure them automatically -->
 	<context:component-scan base-package="org.xored.edu.memorise.rest.resources" />
+
+	<!-- Search for PropertyReader -->
+	<context:component-scan base-package="org.xored.edu.memorise" />
+
 	<!--
 		DATABASE SETUP 
 	 -->
@@ -124,8 +128,8 @@
 
 	<bean id="cronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="MemoCrawlerJobDetail" />
-		<!-- job start every 10 min !-->
-		<property name="cronExpression" value="0 0/10 * * * ?" />
+		<!-- if in application.properties no indicate quartz.time then job start at 3:00 every day -->
+		<property name="cronExpression" value="0 0 3 * * ?" />
 	</bean>
 
 	<!--

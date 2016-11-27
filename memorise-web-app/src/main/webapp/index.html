@@ -41,8 +41,8 @@
 			<ul class="nav navbar-nav">
 				<li><a href="#!/register" ng-hide="hasRole('ROLE_USER')">Register</a></li>
 			</ul>
-			<ul class="nav navbar-nav">
-				<li><a href="" ng-show="hasRole('ROLE_PUBLISHER')" ng-click="Crawler()"> Crawler</a></li>
+			<ul class="nav navbar-nav" ng-show="hasRole('ROLE_PUBLISHER')">
+				<li><a href="" ng-click="crawlBtnIsDisabled || Crawler()"> Crawler</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown" ng-show="hasRole('ROLE_USER')">

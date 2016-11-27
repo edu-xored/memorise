@@ -112,8 +112,19 @@ angular.module('memoriseApp', ['ngRoute', 'ngCookies', 'memoriseApp.services'])
 			$location.path("/login");
 		};
 
+		$rootScope.crawlBtnIsDisabled = false;
 		$rootScope.Crawler = function() {
-		    $http.post('/rest/crawler/run');
+			$rootScope.crawlBtnIsDisabled = true;
+		    $http.post('/rest/crawler/run')
+		    	.then(function() {
+		    		$rootScope.crawlBtnIsDisabled = false;
+		    	})
+		        .then(function success(response) {
+		            alert('Crawler start successfully');
+		        }, function error(response) {
+		            alert('Crawler error\nstatus: ' + response.status +
+		                '\nand response: ' + response.statusText);
+		        });
 		}
 		
 		 /* Try getting valid user from cookie or go to login page */

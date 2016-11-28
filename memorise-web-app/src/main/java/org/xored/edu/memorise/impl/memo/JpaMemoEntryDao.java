@@ -1,6 +1,7 @@
 package org.xored.edu.memorise.impl.memo;
 
 import org.xored.edu.memorise.api.memo.Memo;
+import org.xored.edu.memorise.api.memo.services.MemoEntryDao;
 import org.xored.edu.memorise.core.dao.JpaDao;
 import org.springframework.transaction.annotation.Transactional;
 

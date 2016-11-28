@@ -37,6 +37,7 @@ public class Memo implements org.xored.edu.memorise.core.entity.Entity {
 
 	public Memo() {
 		this.date = new Date();
+		this.counter = 0L;
 	}
 
 	@JsonView(JsonViews.Publisher.class)

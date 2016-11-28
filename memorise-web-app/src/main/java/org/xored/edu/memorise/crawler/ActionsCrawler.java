@@ -1,13 +1,15 @@
 package org.xored.edu.memorise.crawler;
 
 
-import org.xored.edu.memorise.crawler.api.MatchingMemeCandidate;
-import org.xored.edu.memorise.crawler.api.MemeParser;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import org.xored.edu.memorise.api.memo.Memo;
+import org.xored.edu.memorise.crawler.api.MemoMatching;
+import org.xored.edu.memorise.crawler.api.MemoEntryFinder;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -18,22 +20,27 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class ActionsCrawler extends WebCrawler {
-    private static MemeParser memeParser;
-    private static MemeCandidate memeCandidate;
-    private static MatchingMemeCandidate matchingMemeCandidate;
+    private static MemoEntryFinder memoEntryFinder;
+    private static Memo memo;
+    private static MemoMatching memoMatching;
+    private static CrawlerServicesContext servicesContext;
     private static final Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
             + "|png|tiff?|mid|mp2|mp3|mp4"
             + "|wav|avi|mov|mpeg|ram|m4v|pdf"
             + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
 
-    static void configure(MemeParser parser, MatchingMemeCandidate matching, MemeCandidate candidate) {
-        memeParser = parser;
-        matchingMemeCandidate = matching;
-        memeCandidate = candidate;
+    static void configure(MemoEntryFinder memoEntryFinder,
+                          MemoMatching memoMatching,
+                          CrawlerServicesContext servicesContext,
+                          Memo memo) {
+        ActionsCrawler.memoEntryFinder = memoEntryFinder;
+        ActionsCrawler.memoMatching = memoMatching;
+        ActionsCrawler.servicesContext = servicesContext;
+        ActionsCrawler.memo = memo;
     }
 
     @Override
-    public boolean shouldVisit(WebURL url) {
+    public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
         return !FILTERS.matcher(href).matches();
     }
@@ -43,18 +50,20 @@ public class ActionsCrawler extends WebCrawler {
         logger.info("URL: " + page.getWebURL().getURL());
         if (page.getParseData() instanceof HtmlParseData) {
             String text = getPageText(page);
-            MemeInfo info = parseMemeCandidate(text);
-            logger.info("Meme info counter = " + info.getCounter());
-            matchingMemeCandidate.match(memeCandidate, info);
+            memo = tryFindMemo();
+            memoEntryFinder.findEntries(text, memo);
+            logger.info("Meme info counter = " + memo.getCounter());
+            memoMatching.match(memo);
+            servicesContext.getBasicMemoService().saveMemo(memo);
         }
+    }
+
+    private Memo tryFindMemo() {
+        List memosByTitle = servicesContext.getSearchMemoService().findMemosByTitle(memo.getTitle());
+        return !memosByTitle.isEmpty() ? (Memo) memosByTitle.get(0) : memo;
     }
 
     private String getPageText(Page page) {
         return ((HtmlParseData) page.getParseData()).getText();
     }
-
-    private MemeInfo parseMemeCandidate(String text) {
-        return memeParser.parse(text, memeCandidate);
-    }
-
 }

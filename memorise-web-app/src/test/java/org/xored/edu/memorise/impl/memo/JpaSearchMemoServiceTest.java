@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.xored.edu.memorise.api.memo.Memo;
-import org.xored.edu.memorise.api.memo.SearchMemoService;
+import org.xored.edu.memorise.api.memo.services.SearchMemoService;
 import org.xored.edu.memorise.impl.DataBaseInitializer;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Anatoly on 22.11.2016.

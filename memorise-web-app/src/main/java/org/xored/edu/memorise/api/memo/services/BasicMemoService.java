@@ -4,9 +4,6 @@ import org.xored.edu.memorise.api.memo.Memo;
 
 import java.util.List;
 
-/**
- * Created by Anatoly on 25.11.2016.
- */
 public interface BasicMemoService {
     Memo save(Memo memo);
 

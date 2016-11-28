@@ -83,5 +83,4 @@ public class MemoEntryResourceTest {
 
         verify(mockBasicMemoService, times(2)).findAll();
     }
-
 }

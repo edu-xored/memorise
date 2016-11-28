@@ -11,30 +11,30 @@ import org.xored.edu.memorise.core.dao.JpaDao;
 
 import java.util.List;
 
-/**
- * Created by Anatoly on 25.11.2016.
- */
 public class JpaBasicMemoService extends JpaDao<Memo, Long> implements BasicMemoService {
     private SearchMemoService searchMemoService;
-        
+
     public JpaBasicMemoService() {
         super(Memo.class);
     }
 
     @Override
     @Transactional
-    @CacheEvict(cacheNames="memos", allEntries=true)
+    @CacheEvict(cacheNames = "memos", allEntries = true)
     public Memo save(Memo memo) {
-        return super.save(memo);
+        if (memo != null) {
+            return super.save(memo);
+        }
+        throw new IllegalArgumentException("memo must be defined");
     }
 
     @Override
     @Transactional
-    @CacheEvict(cacheNames="memos", allEntries=true)
+    @CacheEvict(cacheNames = "memos", allEntries = true)
     public void delete(Memo memo) {
         List memosByTitle = searchMemoService.findMemosByTitle(memo.getTitle());
         if (memosByTitle.isEmpty()) {
-            return;
+            throw new IllegalArgumentException("memo must be defined");
         }
         Memo foundMemo = (Memo) memosByTitle.get(0);
         this.delete(foundMemo.getId());
@@ -55,7 +55,7 @@ public class JpaBasicMemoService extends JpaDao<Memo, Long> implements BasicMemo
 
     @Override
     @Transactional
-    @CacheEvict(cacheNames="memos", allEntries=true)
+    @CacheEvict(cacheNames = "memos", allEntries = true)
     public void delete(Long id) {
         super.delete(id);
     }

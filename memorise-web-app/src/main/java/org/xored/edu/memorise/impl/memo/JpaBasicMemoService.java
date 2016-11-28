@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class JpaBasicMemoService extends JpaDao<Memo, Long> implements BasicMemoService {
     private SearchMemoService searchMemoService;
-
+        
     public JpaBasicMemoService() {
         super(Memo.class);
     }
@@ -41,7 +41,7 @@ public class JpaBasicMemoService extends JpaDao<Memo, Long> implements BasicMemo
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     @Cacheable("memos")
     public List<Memo> findAll() {
         return super.findAll();

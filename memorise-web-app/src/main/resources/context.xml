@@ -134,6 +134,11 @@
 	<bean name="MemoCrawlerJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass" value="org.xored.edu.memorise.MemoCrawlerJob"/>
 		<property name="durability" value="true" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="crawlRun" value-ref="crawlerRunner" />
+			</map>
+		</property>
 	</bean>
 
 	<!--

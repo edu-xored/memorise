@@ -1,9 +1,9 @@
 package org.xored.edu.memorise;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import org.slf4j.Logger;
@@ -21,10 +21,7 @@ public class MemoCrawlerJob extends QuartzJobBean{
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	private CrawlerRunner crawlerRunner;
-
-	private final List<String> SEEDS = Arrays.asList("http://ru.xored.com");
+	private final List<String> SEEDS = Arrays.asList("http://www.ru.xored.com");
 
 	private static Lock crawlerExecuteLock = new ReentrantLock();
 
@@ -36,14 +33,15 @@ public class MemoCrawlerJob extends QuartzJobBean{
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-		this.logger.info("MemoCrawlerJob is running");
-
 		//if crawler already has been running, skip it
 		if (!crawlerExecuteLock.tryLock())
 			return;
 		try {
 			logger.info("MemoCrawlerJob is running");
 			long startTime, workingTime;
+
+			JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+			CrawlerRunner crawlerRunner = (CrawlerRunner) jobDataMap.get("crawlRun");
 
 			startTime = System.currentTimeMillis();
 

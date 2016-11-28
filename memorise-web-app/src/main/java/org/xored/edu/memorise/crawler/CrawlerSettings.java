@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * Created by Anatoly on 28.10.2016.
  */
-class CrawlerSettings {
+public class CrawlerSettings {
     private final CrawlConfig crawlConfig;
     private final int numberOfCrawlers;
     private final Collection<String> seeds;

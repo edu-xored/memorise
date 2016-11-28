@@ -1,18 +1,16 @@
 package org.xored.edu.memorise;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xored.edu.memorise.api.memo.Memo;
 import org.xored.edu.memorise.crawler.CrawlerRunner;
 import org.xored.edu.memorise.crawler.CrawlerSettings;
-import org.xored.edu.memorise.crawler.MemeCandidate;
-import org.xored.edu.memorise.crawler.api.MatchingMemeCandidate;
-import org.xored.edu.memorise.crawler.api.MemeParser;
-import org.xored.edu.memorise.crawler.impl.SimpleMemeParserImpl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +21,7 @@ public class MemoCrawlerJob extends QuartzJobBean{
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    MatchingMemeCandidate matchingMemeCandidate;
-
-	private final List<String> SEEDS = Arrays.asList("http://the-flow.ru/videos/yelawolf-shadows/");
+	private final List<String> SEEDS = Arrays.asList("http://www.ru.xored.com");
 
 	private static Lock crawlerExecuteLock = new ReentrantLock();
 
@@ -33,12 +29,10 @@ public class MemoCrawlerJob extends QuartzJobBean{
 	private final int NUMBER_OF_CRAWLERS = 1;
 	private final int MAX_DEPTH_OF_CRAWLING =1;
 	private final int MAX_PAGES_TO_FETCH = 1;
-	private final String MEME_CANDIDATE_NAME = "Wolf";
+	private final String MEME_CANDIDATE_NAME = "xored";
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-		this.logger.info("MemoCrawlerJob is running");
-
 		//if crawler already has been running, skip it
 		if (!crawlerExecuteLock.tryLock())
 			return;
@@ -46,20 +40,17 @@ public class MemoCrawlerJob extends QuartzJobBean{
 			logger.info("MemoCrawlerJob is running");
 			long startTime, workingTime;
 
-			MemeParser memeParser;
-			CrawlerRunner crawlerRunner;
-			CrawlerSettings crawlerSettings;
-			MemeCandidate memeCandidate;
+			JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+			CrawlerRunner crawlerRunner = (CrawlerRunner) jobDataMap.get("crawlRun");
 
 			startTime = System.currentTimeMillis();
 
-			memeParser = new SimpleMemeParserImpl();
-			crawlerRunner = new CrawlerRunner(matchingMemeCandidate, memeParser);
+			Memo memo = new Memo();
+			memo.setTitle(MEME_CANDIDATE_NAME);
 			CrawlConfig crawlConfig = setCrawlConfig();
-			crawlerSettings = new CrawlerSettings(crawlConfig, NUMBER_OF_CRAWLERS, SEEDS);
-			memeCandidate = new MemeCandidate(MEME_CANDIDATE_NAME);
+			CrawlerSettings crawlerSettings = new CrawlerSettings(crawlConfig,NUMBER_OF_CRAWLERS, SEEDS);
 
-			crawlerRunner.run(crawlerSettings, memeCandidate);
+			crawlerRunner.run(crawlerSettings, memo);
 
 			workingTime = System.currentTimeMillis() - startTime;
 			logger.info("Crawler has worked for " + workingTime + " milliseconds");

@@ -15,8 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.xored.edu.memorise.JsonViews;
 import org.xored.edu.memorise.api.memo.Memo;
+import org.xored.edu.memorise.api.memo.services.BasicMemoService;
 import org.xored.edu.memorise.api.user.Role;
-import org.xored.edu.memorise.api.memo.services.MemoEntryDao;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -28,91 +28,87 @@ import java.util.List;
 @Path("/memo")
 public class MemoEntryResource {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	private MemoEntryDao memoEntryDao;
+    private BasicMemoService basicMemoService;
 
-	private ObjectMapper mapper;
+    private ObjectMapper mapper;
 
-	@Cacheable("memos")
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public String list() throws JsonGenerationException, JsonMappingException, IOException {
-		this.logger.info("list()");
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String list() throws JsonGenerationException, JsonMappingException, IOException {
+        this.logger.info("list()");
 
-		ObjectWriter viewWriter;
-		if (this.isPublisher()) {
-			viewWriter = this.mapper.writerWithView(JsonViews.Publisher.class);
-		} else {
-			viewWriter = this.mapper.writerWithView(JsonViews.User.class);
-		}
-		List<Memo> allEntries = this.memoEntryDao.findAll();
+        ObjectWriter viewWriter;
+        if (this.isPublisher()) {
+            viewWriter = this.mapper.writerWithView(JsonViews.Publisher.class);
+        } else {
+            viewWriter = this.mapper.writerWithView(JsonViews.User.class);
+        }
+        List<Memo> allEntries = this.basicMemoService.findAll();
 
-		return viewWriter.writeValueAsString(allEntries);
-	}
+        return viewWriter.writeValueAsString(allEntries);
+    }
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")
-	public Memo read(@PathParam("id") Long id) {
-		this.logger.info("read(id)");
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}")
+    public Memo read(@PathParam("id") Long id) {
+        this.logger.info("read(id)");
 
-		Memo journalsEntry = this.memoEntryDao.find(id);
-		if (journalsEntry == null) {
-			throw new WebApplicationException(404);
-		}
-		return journalsEntry;
-	}
+        Memo journalsEntry = this.basicMemoService.find(id);
+        if (journalsEntry == null) {
+            throw new WebApplicationException(404);
+        }
+        return journalsEntry;
+    }
 
-	@CacheEvict(cacheNames="memos", allEntries=true)
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Memo create(Memo journalsEntry) {
-		this.logger.info("create(): " + journalsEntry);
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Memo create(Memo journalsEntry) {
+        this.logger.info("create(): " + journalsEntry);
 
-		return this.memoEntryDao.save(journalsEntry);
-	}
+        return this.basicMemoService.save(journalsEntry);
+    }
 
-	@CacheEvict(cacheNames="memos", allEntries=true)
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("{id}")
-	public Memo update(@PathParam("id") Long id, Memo journalsEntry) {
-		this.logger.info("update(): " + journalsEntry);
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("{id}")
+    public Memo update(@PathParam("id") Long id, Memo journalsEntry) {
+        this.logger.info("update(): " + journalsEntry);
 
-		return this.memoEntryDao.save(journalsEntry);
-	}
+        return this.basicMemoService.save(journalsEntry);
+    }
 
-	@CacheEvict(cacheNames="memos", allEntries=true)
-	@DELETE
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")
-	public void delete(@PathParam("id") Long id) {
-		this.logger.info("delete(id)");
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}")
+    public void delete(@PathParam("id") Long id) {
+        this.logger.info("delete(id)");
 
-		this.memoEntryDao.delete(id);
-	}
+        this.basicMemoService.delete(id);
+    }
 
-	private boolean isPublisher() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Object principal = authentication.getPrincipal();
-		if ((principal instanceof String) && ((String) principal).equals("anonymousUser")) {
-			return false;
-		}
-		UserDetails userDetails = (UserDetails) principal;
+    private boolean isPublisher() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        if ((principal instanceof String) && ((String) principal).equals("anonymousUser")) {
+            return false;
+        }
+        UserDetails userDetails = (UserDetails) principal;
 
-		return userDetails.getAuthorities().contains(Role.PUBLISHER);
-	}
+        return userDetails.getAuthorities().contains(Role.PUBLISHER);
+    }
 
-	@Autowired
-	public void setMapper(ObjectMapper mapper) {
-		this.mapper = mapper;
-	}
+    @Autowired
+    public void setMapper(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
 
-	@Autowired
-	public void setMemoEntryDao(MemoEntryDao memoEntryDao) {
-		this.memoEntryDao = memoEntryDao;
-	}
+    @Autowired
+    public void setBasicMemoService(BasicMemoService basicMemoService) {
+        this.basicMemoService = basicMemoService;
+    }
 }

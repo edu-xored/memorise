@@ -17,51 +17,51 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class MemoCrawlerJob extends QuartzJobBean{
+public class MemoCrawlerJob extends QuartzJobBean {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	private final List<String> SEEDS = Arrays.asList("http://www.ru.xored.com");
+    private final List<String> SEEDS = Arrays.asList("http://the-flow.ru/news/grebz-kharkov-2");
 
-	private static Lock crawlerExecuteLock = new ReentrantLock();
+    private static Lock crawlerExecuteLock = new ReentrantLock();
 
-	private final String CRAWL_TEMP_DIR = "src/resources/test/crawlerTemporaryDirectory";
-	private final int NUMBER_OF_CRAWLERS = 1;
-	private final int MAX_DEPTH_OF_CRAWLING =1;
-	private final int MAX_PAGES_TO_FETCH = 1;
-	private final String MEME_CANDIDATE_NAME = "xored";
+    private final String CRAWL_TEMP_DIR = "src/resources/test/crawlerTemporaryDirectory";
+    private final int NUMBER_OF_CRAWLERS = 1;
+    private final int MAX_DEPTH_OF_CRAWLING = 1;
+    private final int MAX_PAGES_TO_FETCH = 1;
+    private final String MEME_CANDIDATE_NAME = "группы";
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-		//if crawler already has been running, skip it
-		if (!crawlerExecuteLock.tryLock())
-			return;
-		try {
-			logger.info("MemoCrawlerJob is running");
-			long startTime, workingTime;
+        //if crawler already has been running, skip it
+        if (!crawlerExecuteLock.tryLock())
+            return;
+        try {
+            logger.info("MemoCrawlerJob is running");
+            long startTime, workingTime;
 
-			JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
-			CrawlerRunner crawlerRunner = (CrawlerRunner) jobDataMap.get("crawlRun");
+            JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+            CrawlerRunner crawlerRunner = (CrawlerRunner) jobDataMap.get("crawlRun");
 
-			startTime = System.currentTimeMillis();
+            startTime = System.currentTimeMillis();
 
-			Memo memo = new Memo();
-			memo.setTitle(MEME_CANDIDATE_NAME);
-			CrawlConfig crawlConfig = setCrawlConfig();
-			CrawlerSettings crawlerSettings = new CrawlerSettings(crawlConfig,NUMBER_OF_CRAWLERS, SEEDS);
+            Memo memo = new Memo();
+            memo.setTitle(MEME_CANDIDATE_NAME);
+            CrawlConfig crawlConfig = setCrawlConfig();
+            CrawlerSettings crawlerSettings = new CrawlerSettings(crawlConfig, NUMBER_OF_CRAWLERS, SEEDS);
 
-			crawlerRunner.run(crawlerSettings, memo);
+            crawlerRunner.run(crawlerSettings, memo);
 
-			workingTime = System.currentTimeMillis() - startTime;
-			logger.info("Crawler has worked for " + workingTime + " milliseconds");
-		} catch (Exception e) {
-			logger.info("Crawler crash");
-			//TODO: add more info about cause crawler error
-			throw new JobExecutionException("Crawler error");
-		} finally {
-			crawlerExecuteLock.unlock();
-		}
-	}
+            workingTime = System.currentTimeMillis() - startTime;
+            logger.info("Crawler has worked for " + workingTime + " milliseconds");
+        } catch (Exception e) {
+            logger.info("Crawler crash");
+            //TODO: add more info about cause crawler error
+            throw new JobExecutionException("Crawler error");
+        } finally {
+            crawlerExecuteLock.unlock();
+        }
+    }
 
     private CrawlConfig setCrawlConfig() {
         CrawlConfig crawlConfig = new CrawlConfig();

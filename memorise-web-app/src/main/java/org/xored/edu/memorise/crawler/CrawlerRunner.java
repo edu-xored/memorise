@@ -25,7 +25,7 @@ public class CrawlerRunner {
         this.servicesContext = servicesContext;
     }
 
-    void run(final CrawlerSettings crawlerSettings, final Memo memo) throws Exception {
+    public void run(final CrawlerSettings crawlerSettings, final Memo memo) throws Exception {
         CrawlConfig config = crawlerSettings.getCrawlConfig();
 
         PageFetcher pageFetcher = new PageFetcher(config);

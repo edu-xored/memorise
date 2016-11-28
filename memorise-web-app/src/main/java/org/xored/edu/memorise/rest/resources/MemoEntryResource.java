@@ -15,8 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.xored.edu.memorise.JsonViews;
 import org.xored.edu.memorise.api.memo.Memo;
+import org.xored.edu.memorise.api.memo.services.BasicMemoService;
 import org.xored.edu.memorise.api.user.Role;
-import org.xored.edu.memorise.api.memo.services.MemoEntryDao;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -30,11 +30,10 @@ public class MemoEntryResource {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	private MemoEntryDao memoEntryDao;
+	private BasicMemoService basicMemoService;
 
 	private ObjectMapper mapper;
 
-	@Cacheable("memos")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String list() throws JsonGenerationException, JsonMappingException, IOException {
@@ -46,7 +45,7 @@ public class MemoEntryResource {
 		} else {
 			viewWriter = this.mapper.writerWithView(JsonViews.User.class);
 		}
-		List<Memo> allEntries = this.memoEntryDao.findAll();
+		List<Memo> allEntries = this.basicMemoService.findAll();
 
 		return viewWriter.writeValueAsString(allEntries);
 	}
@@ -57,24 +56,22 @@ public class MemoEntryResource {
 	public Memo read(@PathParam("id") Long id) {
 		this.logger.info("read(id)");
 
-		Memo journalsEntry = this.memoEntryDao.find(id);
+		Memo journalsEntry = this.basicMemoService.find(id);
 		if (journalsEntry == null) {
 			throw new WebApplicationException(404);
 		}
 		return journalsEntry;
 	}
 
-	@CacheEvict(cacheNames="memos", allEntries=true)
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Memo create(Memo journalsEntry) {
 		this.logger.info("create(): " + journalsEntry);
 
-		return this.memoEntryDao.save(journalsEntry);
+		return this.basicMemoService.save(journalsEntry);
 	}
 
-	@CacheEvict(cacheNames="memos", allEntries=true)
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -82,17 +79,16 @@ public class MemoEntryResource {
 	public Memo update(@PathParam("id") Long id, Memo journalsEntry) {
 		this.logger.info("update(): " + journalsEntry);
 
-		return this.memoEntryDao.save(journalsEntry);
+		return this.basicMemoService.save(journalsEntry);
 	}
 
-	@CacheEvict(cacheNames="memos", allEntries=true)
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
 	public void delete(@PathParam("id") Long id) {
 		this.logger.info("delete(id)");
 
-		this.memoEntryDao.delete(id);
+		this.basicMemoService.delete(id);
 	}
 
 	private boolean isPublisher() {
@@ -112,7 +108,7 @@ public class MemoEntryResource {
 	}
 
 	@Autowired
-	public void setMemoEntryDao(MemoEntryDao memoEntryDao) {
-		this.memoEntryDao = memoEntryDao;
+	public void setBasicMemoService(BasicMemoService basicMemoService) {
+		this.basicMemoService = basicMemoService;
 	}
 }

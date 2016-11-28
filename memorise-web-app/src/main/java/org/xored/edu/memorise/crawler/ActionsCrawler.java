@@ -54,7 +54,7 @@ public class ActionsCrawler extends WebCrawler {
             memoEntryFinder.findEntries(text, memo);
             logger.info("Meme info counter = " + memo.getCounter());
             memoMatching.match(memo);
-            servicesContext.getBasicMemoService().saveMemo(memo);
+            servicesContext.getBasicMemoService().save(memo);
         }
     }
 

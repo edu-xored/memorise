@@ -30,11 +30,12 @@ public class CrawlerRunnerTest {
     @Before
     public void setUp() throws Exception {
         ArrayList<String> seeds = new ArrayList<String>();
-        seeds.add("http://www.eurosport.ru/football/champions-league/2016-2017/story_sto5959402.shtml");
+        //seeds.add("http://www.eurosport.ru/football/champions-league/2016-2017/story_sto5959402.shtml");
+        seeds.add("http://the-flow.ru/news/grebz-kharkov-2");
         CrawlConfig crawlConfig = setCrawlConfig();
         crawlerSettings = new CrawlerSettings(crawlConfig, 1, seeds);
         memo = new Memo();
-        memo.setTitle("Ростов");
+        memo.setTitle("группы");
     }
 
     private CrawlConfig setCrawlConfig() {

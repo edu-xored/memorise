@@ -21,7 +21,7 @@ public class MemoCrawlerJob extends QuartzJobBean{
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	private final List<String> SEEDS = Arrays.asList("http://www.ru.xored.com");
+	private final List<String> SEEDS = Arrays.asList("http://the-flow.ru/news/grebz-kharkov-2");
 
 	private static Lock crawlerExecuteLock = new ReentrantLock();
 
@@ -29,7 +29,7 @@ public class MemoCrawlerJob extends QuartzJobBean{
 	private final int NUMBER_OF_CRAWLERS = 1;
 	private final int MAX_DEPTH_OF_CRAWLING =1;
 	private final int MAX_PAGES_TO_FETCH = 1;
-	private final String MEME_CANDIDATE_NAME = "xored";
+	private final String MEME_CANDIDATE_NAME = "группы";
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {

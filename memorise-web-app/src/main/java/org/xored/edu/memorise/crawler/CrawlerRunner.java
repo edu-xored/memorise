@@ -9,6 +9,8 @@ import org.xored.edu.memorise.api.memo.Memo;
 import org.xored.edu.memorise.crawler.api.MemoEntryFinder;
 import org.xored.edu.memorise.crawler.api.MemoMatching;
 
+import java.util.List;
+
 /**
  * @author defremov
  */
@@ -25,7 +27,7 @@ public class CrawlerRunner {
         this.servicesContext = servicesContext;
     }
 
-    public void run(final CrawlerSettings crawlerSettings, final Memo memo) throws Exception {
+    public void run(final CrawlerSettings crawlerSettings, final List<Memo> memos) throws Exception {
         CrawlConfig config = crawlerSettings.getCrawlConfig();
 
         PageFetcher pageFetcher = new PageFetcher(config);
@@ -37,7 +39,7 @@ public class CrawlerRunner {
             controller.addSeed(seed);
         }
 
-        ActionsCrawler.configure(memoEntryFinder, memoMatching, servicesContext, memo);
+        ActionsCrawler.configure(memoEntryFinder, memoMatching, servicesContext, memos);
         controller.start(ActionsCrawler.class, crawlerSettings.getNumberOfCrawlers());
     }
 }

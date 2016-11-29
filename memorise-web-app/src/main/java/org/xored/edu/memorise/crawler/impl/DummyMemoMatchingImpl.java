@@ -9,7 +9,7 @@ import org.xored.edu.memorise.crawler.api.MemoMatching;
  */
 public class DummyMemoMatchingImpl implements MemoMatching {
 
-    public static final long ACTUAL_COUNTER = 5L;
+    public static final long ACTUAL_COUNTER = 6L;
     public static final long ARCHIVED_COUNTER = 2L;
 
     @Override
@@ -17,11 +17,9 @@ public class DummyMemoMatchingImpl implements MemoMatching {
         if (candidate.getCounter() > ACTUAL_COUNTER) {
             candidate.setStatus(MemoStatus.ACTUAL);
             return true;
-        }
-        else if (candidate.getCounter() < ARCHIVED_COUNTER) {
+        } else if (candidate.getCounter() < ARCHIVED_COUNTER) {
             candidate.setStatus(MemoStatus.ARCHIVED);
-        }
-        else {
+        } else {
             candidate.setStatus(MemoStatus.CANDIDATE);
         }
 

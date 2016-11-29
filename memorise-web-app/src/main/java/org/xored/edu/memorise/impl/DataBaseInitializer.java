@@ -47,6 +47,15 @@ public class DataBaseInitializer {
         publisher.addRole(Role.USER);
         publisher.addRole(Role.PUBLISHER);
         this.userDao.save(publisher);
+
+        long timestamp = System.currentTimeMillis() - (1000 * 60 * 60 * 24);
+        Memo memo = new Memo();
+        memo.setTitle("Old meme");
+        memo.setDescription("This is test meme");
+        memo.setDate(new Date(timestamp));
+        memo.setStatus(MemoStatus.ACTUAL);
+        memo.setCounter(10L);
+        this.memoEntryDao.save(memo);
     }
 
 }

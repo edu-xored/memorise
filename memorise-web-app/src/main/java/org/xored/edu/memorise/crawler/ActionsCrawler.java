@@ -9,6 +9,7 @@ import org.xored.edu.memorise.api.memo.Memo;
 import org.xored.edu.memorise.crawler.api.MemoMatching;
 import org.xored.edu.memorise.crawler.api.MemoEntryFinder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -21,7 +22,7 @@ import java.util.regex.Pattern;
  */
 public class ActionsCrawler extends WebCrawler {
     private static MemoEntryFinder memoEntryFinder;
-    private static Memo memo;
+    private static List<Memo> memos;
     private static MemoMatching memoMatching;
     private static CrawlerServicesContext servicesContext;
     private static final Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
@@ -32,11 +33,11 @@ public class ActionsCrawler extends WebCrawler {
     static void configure(MemoEntryFinder memoEntryFinder,
                           MemoMatching memoMatching,
                           CrawlerServicesContext servicesContext,
-                          Memo memo) {
+                          List<Memo> memos) {
         ActionsCrawler.memoEntryFinder = memoEntryFinder;
         ActionsCrawler.memoMatching = memoMatching;
         ActionsCrawler.servicesContext = servicesContext;
-        ActionsCrawler.memo = memo;
+        ActionsCrawler.memos = memos;
     }
 
     @Override
@@ -50,17 +51,27 @@ public class ActionsCrawler extends WebCrawler {
         logger.info("URL: " + page.getWebURL().getURL());
         if (page.getParseData() instanceof HtmlParseData) {
             String text = getPageText(page);
-            memo = tryFindMemo();
-            memoEntryFinder.findEntries(text, memo);
-            logger.info("Meme info counter = " + memo.getCounter());
-            memoMatching.match(memo);
-            servicesContext.getBasicMemoService().save(memo);
+
+            for (Memo memo :
+                    memos) {
+                findAndSaveMemo(text, memo);
+            }
         }
     }
 
-    private Memo tryFindMemo() {
-        List memosByTitle = servicesContext.getSearchMemoService().findMemosByTitle(memo.getTitle());
-        return !memosByTitle.isEmpty() ? (Memo) memosByTitle.get(0) : memo;
+    private void findAndSaveMemo(String text, Memo memo) {
+        Memo foundMemo = tryFindMemo(memo);
+        memoEntryFinder.findEntries(text, foundMemo);
+
+        logger.info(foundMemo + " info counter = " + foundMemo.getCounter());
+
+        memoMatching.match(foundMemo);
+        servicesContext.getBasicMemoService().save(foundMemo);
+    }
+
+    private Memo tryFindMemo(Memo memo) {
+        List<Memo> memosByTitle = servicesContext.getSearchMemoService().findMemosByTitle(memo.getTitle());
+        return !memosByTitle.isEmpty() ? memosByTitle.get(0) : memo;
     }
 
     private String getPageText(Page page) {

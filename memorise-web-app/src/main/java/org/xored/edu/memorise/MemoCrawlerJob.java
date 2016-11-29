@@ -21,15 +21,33 @@ public class MemoCrawlerJob extends QuartzJobBean {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final List<String> SEEDS = Arrays.asList("http://the-flow.ru/news/grebz-kharkov-2");
+    private final static List<String> SEEDS = Arrays.asList(
+            "http://www.eurosport.ru/football/champions-league/2016-2017/story_sto5959402.shtml",
+            "http://ru.xored.com/about/"
+    );
+
+    private final static List<Memo> MEMOS = Arrays.asList(new Memo(
+                    "Ростов",
+                    "Сенсационную победу ФК «Ростов» над «Баварией» запомнят надолго. Мюнхенская ..."
+            ),
+            new Memo(
+                    "Xored",
+                    "Xored Software is a software and service company that helps developers and " +
+                            "corporations make the most of their investment in development tools, platforms, ..."
+            ),
+            new Memo(
+                    "Трамп",
+                    "До́нальд Джон Трамп (англ. Donald John Trump; род. 14 июня 1946 года, Джамейка, " +
+                            "боро Куинс, Нью-Йорк, США) — американский бизнесмен и политик..."
+            )
+    );
 
     private static Lock crawlerExecuteLock = new ReentrantLock();
 
-    private final String CRAWL_TEMP_DIR = "src/resources/test/crawlerTemporaryDirectory";
-    private final int NUMBER_OF_CRAWLERS = 1;
-    private final int MAX_DEPTH_OF_CRAWLING = 1;
-    private final int MAX_PAGES_TO_FETCH = 1;
-    private final String MEME_CANDIDATE_NAME = "группы";
+    private final static String CRAWL_TEMP_DIR = "src/resources/test/crawlerTemporaryDirectory";
+    private final static int NUMBER_OF_CRAWLERS = 2;
+    private final static int MAX_DEPTH_OF_CRAWLING = 1;
+    private final static int MAX_PAGES_TO_FETCH = 2;
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -45,12 +63,10 @@ public class MemoCrawlerJob extends QuartzJobBean {
 
             startTime = System.currentTimeMillis();
 
-            Memo memo = new Memo();
-            memo.setTitle(MEME_CANDIDATE_NAME);
             CrawlConfig crawlConfig = setCrawlConfig();
             CrawlerSettings crawlerSettings = new CrawlerSettings(crawlConfig, NUMBER_OF_CRAWLERS, SEEDS);
 
-            crawlerRunner.run(crawlerSettings, memo);
+            crawlerRunner.run(crawlerSettings, MEMOS);
 
             workingTime = System.currentTimeMillis() - startTime;
             logger.info("Crawler has worked for " + workingTime + " milliseconds");

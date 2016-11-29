@@ -13,6 +13,7 @@ import org.xored.edu.memorise.api.memo.MemoStatus;
 import org.xored.edu.memorise.api.memo.services.SearchMemoService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,17 +25,19 @@ public class CrawlerRunnerTest {
     @Autowired
     private CrawlerRunner crawlerRunner;
     private CrawlerSettings crawlerSettings;
-    private Memo memo;
+    private List<Memo> memos;
     @Autowired
     private SearchMemoService searchMemoService;
+
     @Before
     public void setUp() throws Exception {
         ArrayList<String> seeds = new ArrayList<String>();
         seeds.add("http://www.eurosport.ru/football/champions-league/2016-2017/story_sto5959402.shtml");
         CrawlConfig crawlConfig = setCrawlConfig();
         crawlerSettings = new CrawlerSettings(crawlConfig, 1, seeds);
-        memo = new Memo();
+        Memo memo = new Memo();
         memo.setTitle("Ростов");
+        memos = Arrays.asList(memo);
     }
 
     private CrawlConfig setCrawlConfig() {
@@ -47,10 +50,10 @@ public class CrawlerRunnerTest {
 
     @Test
     public void run() throws Exception {
-        crawlerRunner.run(crawlerSettings, memo);
+        crawlerRunner.run(crawlerSettings, memos);
 
-        Assert.assertTrue(memo.getCounter() > 10L);
-        Assert.assertEquals(MemoStatus.ACTUAL, memo.getStatus());
+        Assert.assertTrue(memos.get(0).getCounter() > 10L);
+        Assert.assertEquals(MemoStatus.ACTUAL, memos.get(0).getStatus());
         Assert.assertTrue(!searchMemoService.findMemosByTitle("Ростов").isEmpty());
     }
 
@@ -58,6 +61,6 @@ public class CrawlerRunnerTest {
     public void runNullCandidate() throws Exception {
         crawlerRunner.run(crawlerSettings, null);
 
-        Assert.assertEquals(0L, memo.getCounter().longValue());
+        Assert.assertEquals(0L, memos.get(0).getCounter().longValue());
     }
 }

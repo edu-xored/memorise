@@ -42,7 +42,7 @@ public class CrawlerResource {
 				if (CRAWLER_JOB_DETAIL_NAME.equals(jobKey.getName())) {
 					for (JobExecutionContext runningJob : scheduler.getCurrentlyExecutingJobs())
 						if (runningJob.getJobDetail().getKey().equals(jobKey))
-							return Response.status(429).build();
+							return Response.status(208).build();
 
 					scheduler.triggerJob(jobKey);
 					return Response.status(202).build();

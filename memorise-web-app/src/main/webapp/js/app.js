@@ -116,14 +116,23 @@ angular.module('memoriseApp', ['ngRoute', 'ngCookies', 'memoriseApp.services'])
 		$rootScope.Crawler = function() {
 			$rootScope.crawlBtnIsDisabled = true;
 		    $http.post('/rest/crawler/run')
-		    	.then(function() {
-		    		$rootScope.crawlBtnIsDisabled = false;
-		    	})
 		        .then(function success(response) {
-		            alert('Crawler start successfully');
+		        	switch (response.status) {
+		        		case 202:
+		            		alert('Crawler start successfully');
+		            		break;
+		            	case 208:
+		            		alert('Please wait, crawler already is being run');
+		            		break;
+		            	default:
+		            		alert('Unknown non error response');
+		            		break;
+		            }
+		    		$rootScope.crawlBtnIsDisabled = false;
 		        }, function error(response) {
 		            alert('Crawler error\nstatus: ' + response.status +
 		                '\nand response: ' + response.statusText);
+		    		$rootScope.crawlBtnIsDisabled = false;
 		        });
 		}
 		
